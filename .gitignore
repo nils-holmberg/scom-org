@@ -6,6 +6,7 @@
 log/*
 src/*
 tmp/*
+!tmp/column-match.txt
 
 # keep empty dir
 !log/.gitkeep
