@@ -3,6 +3,7 @@
 .Rhistory
 
 # folder content
+csv/emoticon_conversion_noGraphic.csv
 log/*
 src/*
 tmp/*
