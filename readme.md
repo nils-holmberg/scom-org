@@ -1,8 +1,12 @@
 # organizational communication
 some projects will be added here
 
-## emotional labor
+## ngo communication in social media
+project info
+
+## sentiment measures and user engagment
+project info
+
+## emotional labor (not here)
 social media communicators..
 
-## section headline
-project info
