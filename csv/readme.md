@@ -1,6 +1,12 @@
 # data processing pipeline
-some point in an unordered list here
-- normalize raw data (records, delims, id, etc)
-- some next step
+some intro here
+
+## normalize raw data 
+- records, fix newlines
+- delimiters, insert tabs
+- id
+- etc
+
+## some next step
 
 
