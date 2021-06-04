@@ -40,3 +40,8 @@ some intro here
 - linear models
 - scatter plots
 
+
+pufen
+
+![need better figure](../fig/PXL_20210604_044423502.jpg "need better figure")
+
