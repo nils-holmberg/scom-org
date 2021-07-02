@@ -10,10 +10,12 @@ some intro here
 - records, fix newlines
 - delimiters, insert tabs
 - unique record id, post id
-- facebook, ca 100K rows
+- facebook, ca 240K rows
 
-## split, sample (sh)
-- 100K into 10K chunks
+## clean, split, sample (sh)
+- clean out N/A followers
+- 240K to 120K post
+- divide into 10K chunks
 - randomize row order
 
 ## emojis to text (R)
