@@ -16,7 +16,7 @@ line of argument ..
 - maybe need for a sentiment index ? e.g. s_index = frq + int
 
 ## ngo communication in social media
-project info
+some project info
 
 ## emotional labor (not here)
 social media communicators..
