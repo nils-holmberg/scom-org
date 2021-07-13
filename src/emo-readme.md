@@ -48,7 +48,7 @@ take a look in csv folder
 # Results
 descriptive results, visualize aggregated data, test hypotheses
 
-![test figure](../fig/ei-sa-norm-01.png | width=250)
+![test figure](../fig/ei-sa-norm-01.png){ width=250 }
 
 ### model
 Table: e_index
