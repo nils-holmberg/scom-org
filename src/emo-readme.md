@@ -48,7 +48,7 @@ take a look in csv folder
 # Results
 descriptive results, visualize aggregated data, test hypotheses
 
-![test figure](../fig/ei-sa-norm-01.png "test figure")
+![test figure](../fig/ei-sa-norm-01.png =250)
 
 ### model
 Table: e_index
