@@ -50,6 +50,18 @@ descriptive results, visualize aggregated data, test hypotheses
 
 ![test figure](../fig/ei-sa-norm-01.png "test figure")
 
+### model
+Table: e_index
+
+|term        | Estimate| Std..Error| t.value|   p.z|
+|:-----------|--------:|----------:|-------:|-----:|
+|(Intercept) |    0.063|      0.004|  14.268| 0.000|
+|sa_val_norm |    0.008|      0.004|   2.292| 0.022|
+|sa_int_norm |    0.034|      0.005|   7.331| 0.000|
+|follow_norm |    0.008|      0.003|   2.887| 0.004|
+|time_norm   |   -0.014|      0.003|  -5.009| 0.000|
+
+
 ## Effects of sentiment measures on user engagement
 three measures stated in h1a-h1c
 
