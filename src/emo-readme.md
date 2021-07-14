@@ -1,7 +1,7 @@
 # Contents
 - [introduction](#introduction)
 - [methods](#methods)
-  - [sentiment analysis](##sentiment-analysis)
+  - [sentiment analysis](#sentiment-analysis)
 - [results](#results)
 - [discussion](#discussion)
 
