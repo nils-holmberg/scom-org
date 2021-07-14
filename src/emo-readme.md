@@ -1,3 +1,6 @@
+# Abstract
+methods, results
+
 # Introduction
 formulate hyptheses
 
@@ -46,12 +49,21 @@ take a look in csv folder
 - scatter plots
 
 # Results
-descriptive results, visualize aggregated data, test hypotheses
+The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), 
 
-![test figure](../fig/ei-sa-norm-01.png width=250)
+![test figure](../fig/ei-sa-time-02.png)
+Figure 1
+
+Positive relationships between user engagement and sentiment measures.
+
+![test figure](../fig/ei-sa-norm-02.png)
+Figure 2
+
+A number of measures were investigated for their explanatory contribution in relation to user engagement. Based on the theoretical model informed by previous research within organizational communication on social media, we hypothesized that user engagement would be positivey associated with sentiment in textual post content (H1a-H1c). We also hypothesized that this dependent measure would be positively associated with the number of followers of NGO Facebook pages (H2). Finally, we hypothesized that later time of post over the selected time period would be associated with higher levels user engagement (H3).
+
 
 ### model
-Table: e_index
+Table 1: Effects on user engagment
 
 |term        | Estimate| Std..Error| t.value|   p.z|
 |:-----------|--------:|----------:|-------:|-----:|
