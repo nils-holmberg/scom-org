@@ -1,9 +1,10 @@
 # Table of contents
-- [introduction](#introduction)
-- [methods](#methods)
+- [Introduction](#introduction)
+- [Methods](#methods)
   - [sentiment analysis](##sentiment-analysis)
-- [results](#results)
-- [discussion](#discussion)
+- [Results](#results)
+- [Discussion](#discussion)
+- [Appendix](#appendix)
 
 # Introduction
 formulate hyptheses
