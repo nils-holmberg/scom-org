@@ -49,7 +49,7 @@ take a look in csv folder
 - scatter plots
 
 # Results
-The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), 
+The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), [check appendix](#appendix)
 
 ![test figure](../fig/ei-sa-time-02.png)
 Figure 1
@@ -92,3 +92,5 @@ control variable
 # Discussion
 not there yet..
 
+# Appendix
+aggregate data by organization
