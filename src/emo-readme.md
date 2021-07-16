@@ -14,7 +14,7 @@ formulate hyptheses
 # Methods
 - [TOC](#table-of-contents)
 
-from readme in csv folder..
+Convert readme in csv folder to running text..
 
 ## raw data dump (sh)
 - from crowdtangle ?
@@ -70,8 +70,7 @@ Positive relationships between user engagement and sentiment measures.
 ![test figure](../fig/ei-sa-norm-02.png)
 Figure 2
 
-A number of measures were investigated for their explanatory contribution in relation to user engagement. Based on the theoretical model informed by previous research within organizational communication on social media, we hypothesized that user engagement would be positivey associated with sentiment in textual post content (H1a-H1c). We also hypothesized that this dependent measure would be positively associated with the number of followers of NGO Facebook pages (H2). Finally, we hypothesized that later time of post over the selected time period would be associated with higher levels user engagement (H3).
-
+A number of measures were investigated for their explanatory contribution in relation to user engagement. Based on a theoretical model informed by previous research within organizational communication on social media, we hypothesized that user engagement would be positivey associated with the level of sentiment in textual post content (H1a-H1b). We also hypothesized that the dependent measure of user engagement would be positively associated with the number of users following an NGO Facebook page at the time of posting (H2). Finally, we hypothesized that later time of posting over the selected time period would be associated with higher level of user engagement (H3). To test these hypothesized associations, a mixed effects multiple regression analysis was performed using the statistical software R and the lme4 package, in which individual organization was treated as a random factor (cf. Table 1). 
 
 ### model
 Table 1: Effects on user engagment
@@ -84,9 +83,19 @@ Table 1: Effects on user engagment
 |follow_norm |    0.008|      0.003|   2.887| 0.004|
 |time_norm   |   -0.014|      0.003|  -5.009| 0.000|
 
-
 ## Effects of sentiment measures on user engagement
-three measures stated in h1a-h1c
+The text and emojis of individual posts on NGO Facebook pages were analyzed as several independent measures. Primarily, the dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in the overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was calculated as the square of emotional valency (cf. Methods). Both these measures were then normalized within each NGO in order to make  measurements across organizations more comparable.
+
+The results of the regression model strongly suggest that emotional valency in NGO Facebook posts is positively associated with user engagement (p<0.05, t=2.292). This significant effect 
+
+
+
+H1a: Positive emotional language is positively associated to user engagement. 
+
+H1b: Intensity of emotional language is positively associated to user engagement. 
+
+H1x: Emotional language is positively associated to user engagement. 
+
 
 ### Post text sentiment valency
 moved values to positive scale.. 
@@ -102,6 +111,7 @@ control variable
 
 # Discussion
 - [TOC](#table-of-contents)
+
 not there yet..
 
 # Appendix
