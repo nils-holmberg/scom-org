@@ -1,6 +1,6 @@
 # Table of contents
 - [Introduction](#introduction)
-    - hypotheses
+    - hypotheses H1-H3
 - [Methods](#methods)
     - organizations and posts
     - data cleaning
@@ -14,7 +14,9 @@
     - effects of sentiment measures 
     - effects of followers and post time 
 - [Discussion](#discussion)
+    - applications for communicators
 - [Appendix](#appendix)
+    - measures by organizations
 
 # Introduction
 - [TOC](#table-of-contents)
@@ -92,7 +94,6 @@ Figure 2
 
 A number of measures were investigated for their explanatory contribution in relation to user engagement. Based on a theoretical model informed by previous research within organizational communication on social media, we hypothesized that user engagement would be positivey associated with the level of sentiment in textual post content (H1a-H1b). We also hypothesized that the dependent measure of user engagement would be positively associated with the number of users following an NGO Facebook page at the time of posting (H2). Finally, we hypothesized that later time of posting over the selected time period would be associated with higher level of user engagement (H3). To test these hypothesized associations, a mixed effects multiple regression analysis was performed using the statistical software R and the lme4 package, in which individual organization was treated as a random factor (cf. Table 1). 
 
-### model
 Table 1: Effects on user engagment
 
 |term        | Estimate| Std..Error| t.value|   p.z|
