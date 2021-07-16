@@ -43,11 +43,11 @@ The raw data from crowdtangle were delivered as plain text CSV files. Since many
 
 ## Emoji descriptions
 
-In order to perform a sentiment analysis on the Facebook post texts, a preparatory procedure was needed to handle in-text emojis represented by UTF8 codes, since the AFINN sentiment dictionary did not contain support for handling this type of data ([link](https://github.com/fnielsen/afinn)). Thus, a conversion table was used to translate the unicode image representation of emojis to textual descriptions ([link](https://raw.githubusercontent.com/laurenancona/twimoji/gh-pages/twitterEmojiProject/emoticon_conversion_noGraphic.csv)). Emoji descriptions was produced in Enlish and stored in a separate column in the dataset.
+In order to perform a sentiment analysis on the Facebook post texts, a preparatory procedure was needed to handle in-text emojis represented by UTF8 codes, since the AFINN sentiment dictionary did not contain support for handling this type of data ([link](https://github.com/fnielsen/afinn)). Thus, a conversion table was used to translate the unicode image representation of emojis to textual descriptions ([link](https://raw.githubusercontent.com/laurenancona/twimoji/gh-pages/twitterEmojiProject/emoticon_conversion_noGraphic.csv)). Emoji descriptions was produced in English and stored in a separate column in the dataset.
 
 ## Sentiment analysis
 
-Done. - afinn dictionary (py), - english for emoji text, - swedish for post text
+Done. Important that the AFINN dictionary contained support for English and Swedish, making it a viable alternative for the present study.
 
 ## Independent variables
 
@@ -64,7 +64,7 @@ The main outcome variable of the present study was user engagement. This variabl
 # Results
 - [TOC](#table-of-contents)
 
-The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through the literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), [check appendix](#appendix)
+The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through the literature review of previous research. The descriptive statistics show how each of the variables included in the present study have developed over time. This longitudinal perspective on social media user engagement seems to be understudied in previous research literature. Furthermore, descriptive analyses are also provided to show relationships between user engagement vs post text sentiment measures, and page followers respectively. For additional descriptive statistics of the variables, aggregate by organization, check out [appendix](#appendix).
 
 ## Measures over time
 
@@ -121,7 +121,7 @@ not there yet..
 # Appendix
 - [TOC](#table-of-contents)
 
-aggregate data by organization
+variables aggregate by organization
 
 Table: aggregate
 
