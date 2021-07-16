@@ -21,10 +21,10 @@
 
 Formulate theoretically motivated hyptheses..
 
-- H1a: Positive emotional language is positively associated to user engagement.
-- H1b: Intensity of emotional language is positively associated to user engagement. 
-- H2: Number of page followers is positively associated to user engagement.
-- H3: Earlier time of post is positively associated to user engagement.
+- H1a: Positive valency of emotional language is positively associated with user engagement.
+- H1b: Intensity of emotional language is positively associated with user engagement. 
+- H2: Number of page followers is positively associated with user engagement.
+- H3: Earlier time of post is positively associated with user engagement.
 
 # Methods
 - [TOC](#table-of-contents)
@@ -36,23 +36,23 @@ Convert readme in csv folder to running text..
 - facebook, ca 350K rows
 - instagram, ca 350K rows
 
-## normalize raw data (sh) 
+## data cleaning
+- normalize raw data (sh) 
 - records, fix newlines
 - delimiters, insert tabs
 - unique record id, post id
 - facebook, ca 240K rows
-
-## clean, split, sample (sh)
+- clean, split, sample (sh)
 - clean out N/A followers
 - 240K to 120K post
 - divide into 10K chunks
 - randomize row order
 
-## emojis to text (R)
+## emoji descriptions
+- emojis to text (R)
 - handle emojis in posts
 - convert emoji to text
-
-## match columns, rows
+- match columns, rows
 - to original 2018 dataset
 - reassemble 100K rows
 
@@ -61,14 +61,15 @@ Convert readme in csv folder to running text..
 - english for emoji text
 - swedish for post text
 
-## outlier detection (R)
+## independent variables
+- outlier detection (R)
 - 1.5 interquartile range
 - standardize, normalize measures
-
-## data aggregation (R)
+- data aggregation (R)
 - 100K rows by 60 months
 
-## modelling, visualization (R)
+## dependent variable
+- modelling, visualization (R)
 - linear models
 - scatter plots
 
