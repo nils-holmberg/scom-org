@@ -33,24 +33,15 @@ Formulate theoretically motivated hyptheses..
 
 Convert readme in csv folder to running text..
 
-## organizations and posts
-- from crowdtangle ? (sh)
-- facebook, ca 350K rows
-- instagram, ca 350K rows
+## Organizations and posts
 
-## data cleaning
-- normalize raw data (sh) 
-- records, fix newlines
-- delimiters, insert tabs
-- unique record id, post id
-- facebook, ca 240K rows
-- clean, split, sample (sh)
-- clean out N/A followers
-- 240K to 120K post
-- divide into 10K chunks
-- randomize row order
+Selection of orgs, from crowdtangle ? (sh), - facebook, ca 350K rows, - instagram, ca 350K rows
 
-## emoji descriptions
+## Data cleaning
+
+The raw data from crowdtangle were delivered as plain text CSV files. Since many of the Facebook posts contained line breaks, the first step was to normalize the data such that each post corresponded to one row in the dataset, and each row got the same number of tab delimited fields. A unique post ID column was also created by concatenating the organization name and post number. At this point the Facebook dataset consisted of ca 240K rows. In the next step, all posts containing a null value on number of page followers at time of posting were filtered out from the dataset. The main reason for this missing data was that Facebook started recording this variable in 2014. After this step the Facebook dataset consisted of ca 120K rows. Finally, the row order in the data was randomized to avoid any order effects in the following analyses.
+
+## Emoji descriptions
 - emojis to text (R)
 - handle emojis in posts
 - convert emoji to text
