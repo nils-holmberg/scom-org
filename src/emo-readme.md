@@ -1,7 +1,11 @@
 # Table of contents
 - [Introduction](#introduction)
 - [Methods](#methods)
+  - [data cleaning](##data-cleaning)
+  - [emoji descriptions](##emoji-descriptions)
   - [sentiment analysis](##sentiment-analysis)
+  - [independent variables](##independent-variables)
+  - [dependent variable](##dependent-variable)
 - [Results](#results)
 - [Discussion](#discussion)
 - [Appendix](#appendix)
@@ -105,6 +109,7 @@ Like the number of followers variable discussed previously, the time of post var
 - [TOC](#table-of-contents)
 
 not there yet..
+- topic modelling av organisationer
 
 ![test figure](../fig/e-rel-time-01.png)
 
