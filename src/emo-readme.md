@@ -42,6 +42,9 @@ Selection of orgs, from crowdtangle ? (sh), - facebook, ca 350K rows, - instagra
 The raw data from crowdtangle were delivered as plain text CSV files. Since many of the Facebook posts contained line breaks, the first step was to normalize the data such that each post corresponded to one row in the dataset, and each row got the same number of tab delimited fields. A unique post ID column was also created by concatenating the organization name and post number. At this point the Facebook dataset consisted of ca 240K rows. In the next step, all posts containing a null value on number of page followers at time of posting were filtered out from the dataset. The main reason for this missing data was that Facebook started recording this variable in 2014. After this step the Facebook dataset consisted of ca 120K rows. Finally, the row order in the data was randomized to avoid any order effects in the following analyses.
 
 ## Emoji descriptions
+
+In order to perform a sentiment analysis on the Facebook post texts, a preparatory procedure was needed to handle in-text emojis represented by UTF8 codes, since the AFINN sentiment dictionary did not contain support for handling this type of data. Thus, a conversion table was used to translate the unicode representation of emojis to textual descriptions ([link](https://raw.githubusercontent.com/laurenancona/twimoji/gh-pages/twitterEmojiProject/emoticon_conversion_noGraphic.csv)). Emoji descriptions was produced in Enlish and stored in a separate column in the dataset.
+
 - emojis to text (R)
 - handle emojis in posts
 - convert emoji to text
@@ -50,9 +53,7 @@ The raw data from crowdtangle were delivered as plain text CSV files. Since many
 - reassemble 100K rows
 
 ## sentiment analysis
-- afinn dictionary (py)
-- english for emoji text
-- swedish for post text
+Done. - afinn dictionary (py), - english for emoji text, - swedish for post text
 
 ## independent variables
 - outlier detection (R)
