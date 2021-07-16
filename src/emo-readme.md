@@ -25,8 +25,8 @@ Formulate theoretically motivated hyptheses..
 
 - H1a: Positive valency of emotional language is positively associated with user engagement.
 - H1b: Intensity of emotional language is positively associated with user engagement. 
-- H2: Number of page followers is positively associated with user engagement.
-- H3: Earlier time of post is positively associated with user engagement.
+- H2: Number of page followers at time of post is positively associated with user engagement.
+- H3: Later date of post in selected time period is negatively associated with user engagement.
 
 # Methods
 - [TOC](#table-of-contents)
@@ -43,29 +43,23 @@ The raw data from crowdtangle were delivered as plain text CSV files. Since many
 
 ## Emoji descriptions
 
-In order to perform a sentiment analysis on the Facebook post texts, a preparatory procedure was needed to handle in-text emojis represented by UTF8 codes, since the AFINN sentiment dictionary did not contain support for handling this type of data. Thus, a conversion table was used to translate the unicode representation of emojis to textual descriptions ([link](https://raw.githubusercontent.com/laurenancona/twimoji/gh-pages/twitterEmojiProject/emoticon_conversion_noGraphic.csv)). Emoji descriptions was produced in Enlish and stored in a separate column in the dataset.
+In order to perform a sentiment analysis on the Facebook post texts, a preparatory procedure was needed to handle in-text emojis represented by UTF8 codes, since the AFINN sentiment dictionary did not contain support for handling this type of data ([link](https://github.com/fnielsen/afinn)). Thus, a conversion table was used to translate the unicode image representation of emojis to textual descriptions ([link](https://raw.githubusercontent.com/laurenancona/twimoji/gh-pages/twitterEmojiProject/emoticon_conversion_noGraphic.csv)). Emoji descriptions was produced in Enlish and stored in a separate column in the dataset.
 
-- emojis to text (R)
-- handle emojis in posts
-- convert emoji to text
-- match columns, rows
-- to original 2018 dataset
-- reassemble 100K rows
+## Sentiment analysis
 
-## sentiment analysis
 Done. - afinn dictionary (py), - english for emoji text, - swedish for post text
 
-## independent variables
-- outlier detection (R)
-- 1.5 interquartile range
-- standardize, normalize measures
-- data aggregation (R)
-- 100K rows by 60 months
+## Independent variables
 
-## dependent variable
-- modelling, visualization (R)
-- linear models
-- scatter plots
+The main predictor of social media user engagement in the present study was sentiment content in Facebook post text and emojis. The dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in an overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was also calculated as the square of emotional valency. 
+
+As additional predictors and control variables, number of page followers at time of posting, and date of posting was included in the regression analysis. The followers measure was operationalized as the number of likes a Facebook page had at the time a post was created, while post time simply was represented by the millisecond UNIX timestamp of a post. The time period of interest was defined as 2014-2019 due to missing data before 2014, which resulted in a dataset of ca 100K rows. 
+
+All predictors were analyzed for outliers, such that data points beyond 1.5 times the interquartile range were excluded. Also, all independent variables were normalized within each NGO in order to make measurements across organizations more comparable.
+
+## Dependent variable
+
+The main outcome variable of the present study was user engagement. This variable was constructed as a summative index variable consisting of number of post likes, comments, shares, and reactions (love, anger, joy, etc). The user engagement variable was then analyzed for outliers, such that data points beyond 1.5 times the interquartile range were excluded. The dependent variable was also normalized within each NGO in order to make measurements across organizations more comparable. After excluding all outliers, the dataset consisted of ca 70K rows, which were included in the regression model.
 
 # Results
 - [TOC](#table-of-contents)
@@ -114,7 +108,7 @@ The results of the regression model suggests that there is a strong positive rel
 
 So far all predictors of user engagement have been positive. The only negative effect on user engagement in the regression model is associated with time (p<0.05, t=-5.009). This means that earlier posts in the time period 2014-2019 (i.e. lower timestamp) tend to generate higher engagement scores than later posts (i.e. higher timestamp). A possible interpretation of this effect is that the Facebook platform has grown considerably over the selected time period, thus contributing to increasing competition between NGO posts and other content on users' individual Facebook feeds. In this sense, the time variable could be regarded as a proxy of an intensified attention economy on social media. Another potential explanation would be that Facebook users tend to become less compassionate over the time period, and thus become less inclined to engage with NGO posts.
 
-Like the number of followers variable discussed previously, the time of post variable represents an important control in model, and thus provides more reliability to the overall positive effects of sentiment content on user engagement. However, the negative effect of post time on user engagement is consistent with our theoretical model and thus provide support for hypothesis H3: Earlier time of post is positively associated to user engagement.
+Like the number of followers variable discussed previously, the time of post variable represents an important control in model, and thus provides more reliability to the overall positive effects of sentiment content on user engagement. However, the negative effect of post time on user engagement is consistent with our theoretical model and thus provide support for hypothesis H3: Later time of post is negatively associated with user engagement.
 
 # Discussion
 - [TOC](#table-of-contents)
