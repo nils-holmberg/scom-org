@@ -41,8 +41,8 @@ Convert readme in csv folder to running text..
 - to original 2018 dataset
 - reassemble 100K rows
 
-## sentiment analysis (py)
-- afinn dictionary
+## sentiment analysis
+- afinn dictionary (py)
 - english for emoji text
 - swedish for post text
 
@@ -60,7 +60,7 @@ Convert readme in csv folder to running text..
 # Results
 - [TOC](#table-of-contents)
 
-The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), [check appendix](#appendix)
+The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through the literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), [check appendix](#appendix)
 
 ![test figure](../fig/ei-sa-time-02.png)
 Figure 1
