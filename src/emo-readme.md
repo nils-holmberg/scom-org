@@ -1,27 +1,32 @@
 # Table of contents
 - [Introduction](#introduction)
 - [Methods](#methods)
-  - [data cleaning](##data-cleaning)
-  - [emoji descriptions](##emoji-descriptions)
-  - [sentiment analysis](##sentiment-analysis)
-  - [independent variables](##independent-variables)
-  - [dependent variable](##dependent-variable)
+  - organizations and posts
+  - data cleaning
+  - emoji descriptions
+  - sentiment analysis
+  - independent variables
+  - dependent variable
 - [Results](#results)
+    - development over time
+    - user engagement 
+    - effects of sentiment measures 
+    - effects of followers and post time 
 - [Discussion](#discussion)
 - [Appendix](#appendix)
 
 # Introduction
 - [TOC](#table-of-contents)
 
-formulate hyptheses
+Formulate theoretically motivated hyptheses..
 
 # Methods
 - [TOC](#table-of-contents)
 
 Convert readme in csv folder to running text..
 
-## raw data dump (sh)
-- from crowdtangle ?
+## organizations and posts
+- from crowdtangle ? (sh)
 - facebook, ca 350K rows
 - instagram, ca 350K rows
 
@@ -66,8 +71,12 @@ Convert readme in csv folder to running text..
 
 The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through the literature review of previous research. Descriptive statistics show .. visualize aggregated data, aggregate by organization (cf. Figure 1), [check appendix](#appendix)
 
+## Measures over time
+
 ![test figure](../fig/ei-sa-time-02.png)
 Figure 1
+
+## User engagement
 
 Positive relationships between user engagement and sentiment measures.
 
