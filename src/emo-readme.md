@@ -89,7 +89,7 @@ Figure 1
 
 ## User engagement
 
-In order to better understand the relationships between the dependent measure user engagement and the predictor variables, a series of scatter plots with corresponding trend lines were produced. All measures were normalized in order to make organizations more comparable. Figure 2 shows how user engagement is positively associated with the independent variables: number of followers, and post text sentiment measures (valency, intencity, frequency of emotionally loaded words and emojis).
+In order to better understand the relationships between the dependent measure **user engagement** and the predictor variables, a series of scatter plots with corresponding trend lines were produced. All measures were normalized in order to make organizations more comparable. Figure 2 shows how user engagement is positively associated with the independent variables: number of followers, and post text sentiment measures (valency, intencity, frequency of emotionally loaded words and emojis).
 
 ![test figure](../fig/ei-sa-norm-02.png)
 Figure 2
