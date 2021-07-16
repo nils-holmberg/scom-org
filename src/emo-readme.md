@@ -1,12 +1,13 @@
 # Table of contents
 - [Introduction](#introduction)
+    - hypotheses
 - [Methods](#methods)
-  - organizations and posts
-  - data cleaning
-  - emoji descriptions
-  - sentiment analysis
-  - independent variables
-  - dependent variable
+    - organizations and posts
+    - data cleaning
+    - emoji descriptions
+    - sentiment analysis
+    - independent variables
+    - dependent variable
 - [Results](#results)
     - development over time
     - user engagement 
@@ -19,6 +20,11 @@
 - [TOC](#table-of-contents)
 
 Formulate theoretically motivated hyptheses..
+
+- H1a: Positive emotional language is positively associated to user engagement.
+- H1b: Intensity of emotional language is positively associated to user engagement. 
+- H2: Number of page followers is positively associated to user engagement.
+- H3: Earlier time of post is positively associated to user engagement.
 
 # Methods
 - [TOC](#table-of-contents)
