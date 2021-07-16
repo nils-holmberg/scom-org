@@ -82,12 +82,14 @@ The results of the survey will be presented in two steps. First, some general de
 
 ## Measures over time
 
+Due to inconsistency and scarcity in the data, a time period from 2014 to 2019 was selected that contained as many post observations as possible for a total of 125 NGO organizations. This time period consisted of 60 months. In order to show how the measures of interest developed over this time period, each measure was aggregated over time in order to produce mean values for each of the consecutive months. These aggregated data were then used to visualize the overall development over time through scatter plots with a corresponding regression line. As can be seen in Figure 1 below, all measures of interest exhibit positive trends over time. 
+
 ![test figure](../fig/ei-sa-time-02.png)
 Figure 1
 
 ## User engagement
 
-Positive relationships between user engagement and sentiment measures.
+In order to better understand the relationships between the dependent measure user engagement and the predictor variables, a series of scatter plots with corresponding trend lines were produced. All measures were normalized in order to make organizations more comparable. Figure 2 shows how user engagement is positively associated with the independent variables: number of followers, and post text sentiment measures (valency, intencity, frequency of emotionally loaded words and emojis).
 
 ![test figure](../fig/ei-sa-norm-02.png)
 Figure 2
