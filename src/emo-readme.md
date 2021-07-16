@@ -35,7 +35,7 @@ Convert readme in csv folder to running text..
 
 ## Organizations and posts
 
-Selection of orgs, from crowdtangle ? (sh), - facebook, ca 350K rows, - instagram, ca 350K rows
+Done. Selection of orgs, from crowdtangle, - facebook, ca 350K rows, - instagram, ca 350K rows.
 
 ## Data cleaning
 
