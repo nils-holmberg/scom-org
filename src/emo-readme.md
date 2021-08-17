@@ -92,6 +92,8 @@ Table 1: Effects on user engagment
 |follow_norm |    0.008|      0.003|   2.887| 0.004|
 |time_norm   |   -0.014|      0.003|  -5.009| 0.000|
 
+_Number of obs: 69434, Groups: org, 125, Conditional R2: 0.204_
+
 ## Effects of sentiment measures on user engagement
 The text and emojis of individual posts on NGO Facebook pages were analyzed as several independent measures. Primarily, the dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in the overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was calculated as the square of emotional valency (cf. Methods). Both these measures were then normalized within each NGO in order to make measurements across organizations more comparable.
 
