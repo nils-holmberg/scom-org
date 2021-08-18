@@ -9,8 +9,8 @@
     - independent variables
     - dependent variable
 - [Results](#results)
-    - development over time
-    - user engagement 
+    - variables development over time
+    - user engagement as outcome
     - effects of sentiment measures 
     - effects of followers and post time 
 - [Discussion](#discussion)
@@ -66,14 +66,14 @@ The main outcome variable of the present study was user engagement. This variabl
 
 The results of the survey will be presented in two steps. First, some general descriptive statistics will be presented, and secondly, we use inferential statistics to test the hypotheses H1-H3 provided by the theoretical models generated through the literature review of previous research. The descriptive statistics show how each of the variables included in the present study have developed over time. This longitudinal perspective on social media user engagement seems to be understudied in previous research literature. Furthermore, descriptive analyses are also provided to show relationships between user engagement vs post text sentiment measures, and page followers respectively. For additional descriptive statistics of the variables, aggregate by organization, check out [appendix](#appendix).
 
-## Measures over time
+## Measures development over time
 
 Due to inconsistency and scarcity in the data, a time period from 2014 to 2019 was selected that contained as many post observations as possible for a total of 125 NGO organizations. This time period consisted of 60 months. In order to show how the measures of interest developed over this time period, each measure was aggregated over time in order to produce mean values for each of the consecutive months. These aggregated data were then used to visualize the overall development over time through scatter plots with a corresponding regression line. As can be seen in Figure 1 below, all measures of interest exhibit positive trends over time. 
 
 ![test figure](../fig/ei-sa-time-02.png)
 Figure 1
 
-## User engagement
+## User engagement as outcome
 
 In order to better understand the relationships between the dependent measure **user engagement** and the predictor variables, a series of scatter plots with corresponding trend lines were produced. All measures were normalized in order to make organizations more comparable. Figure 2 shows how user engagement is positively associated with the independent variables: number of followers, and post text sentiment measures (valency, intencity, frequency of emotionally loaded words and emojis).
 
@@ -92,7 +92,7 @@ Table 1: Effects on user engagment
 |follow_norm |    0.008|      0.003|   2.887| 0.004|
 |time_norm   |   -0.014|      0.003|  -5.009| 0.000|
 
-_Number of obs: 69434, Groups: org, 125, Conditional R2: 0.204_
+_Number of obs: 69434, Groups (org): 125, Conditional R2: 0.204_
 
 ## Effects of sentiment measures on user engagement
 The text and emojis of individual posts on NGO Facebook pages were analyzed as several independent measures. Primarily, the dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in the overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was calculated as the square of emotional valency (cf. Methods). Both these measures were then normalized within each NGO in order to make measurements across organizations more comparable.
