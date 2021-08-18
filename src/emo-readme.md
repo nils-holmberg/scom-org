@@ -51,7 +51,7 @@ Done. Important that the AFINN dictionary contained support for English and Swed
 
 ## Independent variables
 
-The main predictor of social media user engagement in the present study was sentiment content in Facebook post text and emojis. The dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in an overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was also calculated as the square of emotional valency. 
+The main predictor of social media user engagement in the present study was sentiment content in Facebook post text and emojis. The dictionary-based AFINN sentiment analysis provided negative and positive valency scores (-5 to +5) for matching post words and emoji descriptions. These scores were summed up for each post, thereby resulting in an overall emotional valency measure of the post. Based on this valency construct, an emotional intensity measure was also calculated as the square of emotional valency. \[Argue that this is a conservative operationalization of intensity compared to absolute sentiment value, which also produce lower effect in regression model. Also, intensity as a theoretical measure.\]
 
 As additional predictors and control variables, number of page followers at time of posting, and date of posting was included in the regression analysis. The followers measure was operationalized as the number of likes a Facebook page had at the time a post was created, while post time simply was represented by the millisecond UNIX timestamp of a post. The time period of interest was defined as 2014-2019 due to missing data before 2014, which resulted in a dataset of ca 100K rows. 
 
@@ -82,7 +82,7 @@ Figure 2
 
 A number of measures were investigated for their explanatory contribution in relation to user engagement. Based on a theoretical model informed by previous research within organizational communication on social media, we hypothesized that user engagement would be positivey associated with the level of sentiment in textual post content (H1a-H1b). We also hypothesized that the dependent measure of user engagement would be positively associated with the number of users following an NGO Facebook page at the time of posting (H2). Finally, we hypothesized that later time of posting over the selected time period would be associated with higher level of user engagement (H3). To test these hypothesized associations, a mixed effects multiple regression analysis was performed using the statistical software R and the lme4 package, in which individual organization was treated as a random factor (cf. Table 1). 
 
-Table 1: Effects on user engagment
+Table 1: Effects on user engagement
 
 |term        | Estimate| Std..Error| t.value|   p.z|
 |:-----------|--------:|----------:|-------:|-----:|
