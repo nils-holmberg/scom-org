@@ -101,7 +101,7 @@ The text and emojis of individual posts on NGO Facebook pages were analyzed as s
 
 The results of the regression model strongly suggest that emotional valency in NGO Facebook posts is positively associated with user engagement (p<0.05, t=2.292). This significant effect means that the more positive valued words and emojis included in the post text, the higher level of user enagament might be expected. Vice versa, more neutral or negative sentiment in posts is predicted to be associated with lower engagement index scores. Our observational data thus provide support for hypothesis H1a: Positive emotional language is positively associated to user engagement.
 
-Even though emotional valency was revealed to have a significantly positive relationship with user engagement, the regression model also indicates that emotional intensity has an even stronger effect on this dependent measure (p<0.05, t=7.331). Since sentiment intensity was operationalized as valency squared, we argue that this predictor is able to capture a second degree curvilinear effect of post sentiment on user engagement. Accordingly, this effect can be interpreted as U-shaped relationship in which both stronger negative and stronger positive sentiment are associated with increased engagement scores, whereas more neutral sentiment seems to generate lower engagement.^[Check out: Henderson, W. M., & Kent, B. V. (2021). Attachment to God and Psychological Distress: Evidence of a Curvilinear Relationship. Journal for the Scientific Study of Religion.]
+Even though emotional valency was revealed to have a significantly positive relationship with user engagement, the regression model also indicates that emotional intensity has an even stronger effect on this dependent measure (p<0.05, t=7.331). Since sentiment intensity was operationalized as valency squared, we argue that this predictor is able to capture a second degree curvilinear effect of post sentiment on user engagement. Accordingly, this effect can be interpreted as U-shaped relationship in which both stronger negative and stronger positive sentiment are associated with increased engagement scores, whereas more neutral sentiment seems to generate lower engagement[^1].
 
 Furthermore, the model shows that this predictor has a comparatively higher explanatory power, suggesting that a curvilinear effect is indeed better able to capture this effect than the first degree linear relationship expressed by emotional valency. Thus, the model also supports H1b: Intensity of emotional language is positively associated to user engagement. (H1x: Emotional language is positively associated to user engagement.)
 
@@ -121,6 +121,9 @@ not there yet..
 - topic modelling av organisationer
 
 ![test figure](../fig/e-rel-time-01.png)
+
+# Footnotes
+[^1]: Henderson, W. M., & Kent, B. V. (2021). _Attachment to God and Psychological Distress: Evidence of a Curvilinear Relationship_. Journal for the Scientific Study of Religion.
 
 # Appendix
 - [TOC](#table-of-contents)
@@ -256,4 +259,10 @@ Table: aggregate
 |WikimediaSverige                      |  570|        34.01|     108.91|        2.94|      4.58|       29.54|     92.89|     2824.34|   1803.25|
 |WorldAnimalProtectionSverige          | 1262|      1018.28|    1334.48|        0.96|      4.51|       21.25|     42.19|    85681.24|  10013.07|
 |worldschildrensprize                  |  270|       792.31|    2102.12|        2.64|      6.10|       44.05|     87.87|   143251.16|   2073.82|
+
+
+
+
+
+
 
