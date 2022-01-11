@@ -103,6 +103,8 @@ The results of the regression model strongly suggest that emotional valency in N
 
 Even though emotional valency was revealed to have a significantly positive relationship with user engagement, the regression model also indicates that emotional intensity has an even stronger effect on this dependent measure (p<0.05, t=7.331). Since sentiment intensity was operationalized as valency squared, we argue that this predictor is able to capture a second degree curvilinear effect of post sentiment on user engagement. Accordingly, this effect can be interpreted as U-shaped relationship in which both stronger negative and stronger positive sentiment are associated with increased engagement scores, whereas more neutral sentiment seems to generate lower engagement[^1].
 
+[^1]: Henderson, W. M., & Kent, B. V. (2021). _Attachment to God and Psychological Distress: Evidence of a Curvilinear Relationship_. Journal for the Scientific Study of Religion.
+
 Furthermore, the model shows that this predictor has a comparatively higher explanatory power, suggesting that a curvilinear effect is indeed better able to capture this effect than the first degree linear relationship expressed by emotional valency. Thus, the model also supports H1b: Intensity of emotional language is positively associated to user engagement. (H1x: Emotional language is positively associated to user engagement.)
 
 ## Effects of followers and post time on user engagement
@@ -121,9 +123,6 @@ not there yet..
 - topic modelling av organisationer
 
 ![test figure](../fig/e-rel-time-01.png)
-
-# Footnotes
-[^1]: Henderson, W. M., & Kent, B. V. (2021). _Attachment to God and Psychological Distress: Evidence of a Curvilinear Relationship_. Journal for the Scientific Study of Religion.
 
 # Appendix
 - [TOC](#table-of-contents)
