@@ -1,4 +1,4 @@
-# organizational communication
+# strategic communication, organizational communication
 some projects will be added here
 
 ## user engagment and sentiment measures
