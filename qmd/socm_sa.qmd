@@ -1,0 +1,69 @@
+---
+title: scom-org on posit
+---
+
+# replicate analysis
+
+some explanations of code cell in markdown..
+
+```{r}
+if (F) {
+# clone github repo
+usethis::create_from_github("https://github.com/nils-holmberg/scom-org.git", destdir = "/content/", fork = FALSE)
+# go to repo dir
+setwd("/content/scom-org/")
+list.files()
+# delete repo dir, to start over
+unlink("/content/scom-org/", recursive=TRUE)
+}
+```
+
+```{r}
+if (T) {
+# dependencies
+install.packages("tidyverse")
+install.packages("lme4")
+install.packages("plyr")
+}
+```
+
+# start here on posit.cloud
+
+link here [posit](https://posit.cloud/content/5559470)
+
+```{r}
+# unzip data file
+unzip("../csv/fb-sa-210305.csv.zip", exdir="../csv")
+```
+
+```{r}
+#clear workspace
+rm(list=ls())
+#load functions
+source("../src/emo-functions.R")
+#
+#get records, with emojis (191119)
+dfp = posts_get(fn='../csv/fb-sa-210305.csv')
+#
+```
+
+```{r}
+#aggregate measures by organization
+colv = c("e_index","sa_val","sa_int","sa_frq","wc","follow")
+dfo = orgs_aggregate(dfp, colv)
+
+coli = data.frame(test=names(dfo),some=1:length(names(dfo))) %>% filter(!grepl("_se|frq|wc",test)) %>% pull(some)
+knitr::kable(dfo %>% as_tibble() %>% select(all_of(coli)) %>% head(), format="pipe", digits=2, caption='aggregate', booktabs=TRUE)
+```
+
+# ingest new data
+
+```{r}
+#aggregate measures by organization, add org type variable
+xls = readxl::read_excel("../tmp/fb-org-type-nw.xlsx", sheet=1)
+xls = xls %>% select("org","Typ")
+xls = rename(xls, org_type=Typ)
+dto = left_join(dfo, xls, by=join_by(org))
+knitr::kable(dto, format="pipe", digits=2, caption='aggregate, org type', booktabs=TRUE)
+```
+

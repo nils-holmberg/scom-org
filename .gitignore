@@ -9,6 +9,7 @@ log/*
 # qmd
 qmd/*
 !qmd/socm_sa.ipynb
+!qmd/socm_sa.qmd
 # src
 src/*
 !src/emo-functions.R
