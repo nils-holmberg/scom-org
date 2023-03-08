@@ -6,18 +6,20 @@
 csv/emoticon_conversion_noGraphic.csv
 csv/fb-sa-210305.csv
 log/*
-#
+# qmd
 qmd/*
-#
+!qmd/socm_sa.ipynb
+# src
 src/*
 !src/emo-functions.R
 !src/emo-readme.md
 !src/emo-sentiment.ipynb
 !src/readme.md
 !src/socm-sa.ipynb
-#
+# tmp
 tmp/*
 !tmp/column-match.txt
+!tmp/fb-org-type-nw.xlsx
 
 # keep empty dir
 !log/.gitkeep
