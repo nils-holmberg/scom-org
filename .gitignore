@@ -6,7 +6,9 @@
 csv/emoticon_conversion_noGraphic.csv
 csv/fb-sa-210305.csv
 log/*
+qmd/*
 src/*
+!src/emo-functions.R
 !src/emo-readme.md
 !src/emo-sentiment.ipynb
 !src/readme.md
