@@ -1,8 +1,18 @@
 ---
+execute:
+  echo: true
+  output: true
+engine: knitr
+format:
+  html:
+    toc: false
+    number-sections: true
+    colorlinks: true
+    theme: default
 title: scom-org on posit
 ---
 
-# replicate analysis
+## replicate analysis
 
 some explanations of code cell in markdown..
 
@@ -19,7 +29,7 @@ unlink("/content/scom-org/", recursive=TRUE)
 ```
 
 ```{r}
-if (T) {
+if (F) {
 # dependencies
 install.packages("tidyverse")
 install.packages("lme4")
@@ -27,7 +37,7 @@ install.packages("plyr")
 }
 ```
 
-# start here on posit.cloud
+## start here on posit.cloud
 
 link here [posit](https://posit.cloud/content/5559470)
 
@@ -56,14 +66,18 @@ coli = data.frame(test=names(dfo),some=1:length(names(dfo))) %>% filter(!grepl("
 knitr::kable(dfo %>% as_tibble() %>% select(all_of(coli)) %>% head(), format="pipe", digits=2, caption='aggregate', booktabs=TRUE)
 ```
 
-# ingest new data
+## ingest new data
 
 ```{r}
 #aggregate measures by organization, add org type variable
 xls = readxl::read_excel("../tmp/fb-org-type-nw.xlsx", sheet=1)
-xls = xls %>% select("org","Typ")
-xls = rename(xls, org_type=Typ)
+xls = readxl::read_excel("../tmp/fb-org-type-nw-ng.xlsx", sheet=1)
+xls = xls %>% slice(1:125) %>% select("org","Agreed type") #select("org","Typ")
+xls = rename(xls, org_type="Agreed type")
 dto = left_join(dfo, xls, by=join_by(org))
 knitr::kable(dto, format="pipe", digits=2, caption='aggregate, org type', booktabs=TRUE)
 ```
 
+```{r}
+sum(table(dto$org_type))
+```
