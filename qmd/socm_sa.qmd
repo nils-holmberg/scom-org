@@ -15,6 +15,15 @@ title: scom-org on posit
 ## resume analysis 230314
 
 ```{r}
+if (F) {
+# dependencies
+install.packages("tidyverse")
+install.packages("lme4")
+install.packages("plyr")
+}
+```
+
+```{r}
 #clear workspace
 rm(list=ls())
 #load functions
