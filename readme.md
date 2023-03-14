@@ -1,7 +1,9 @@
 # strategic communication, organizations
-some projects will be added here
+
+- some projects will be added here
 
 ## user engagment and sentiment measures
+
 line of argument ..
 - user engagment is an important ngo organizational outcome, kpi
 - sentiment measures positively associated with user engagement [../fig/ei-sa-norm-01.png](../fig/ei-sa-norm-01.png)
@@ -16,8 +18,10 @@ line of argument ..
 - maybe need for a sentiment index ? e.g. s_index = frq + int
 
 ## ngo communication in social media
-some project info
+
+- some project info
 
 ## emotional labor (not here)
+
 social media communicators..
 
