@@ -12,7 +12,29 @@ format:
 title: scom-org on posit
 ---
 
-## replicate analysis
+## resume analysis 230314
+
+```{r}
+#clear workspace
+rm(list=ls())
+#load functions
+source("../src/emo-functions.R")
+#
+dtp = read.table("../csv/fb-sa-230314.csv", sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+dtp[9,]
+str(dtp)
+#knitr::knit_exit()
+```
+
+## resume analysis 230305
+
+```{r}
+if (T) {
+knitr::knit_exit()
+}
+```
+
+### replicate project
 
 some explanations of code cell in markdown..
 
@@ -37,13 +59,15 @@ install.packages("plyr")
 }
 ```
 
-## start here on posit.cloud
+### start here on posit.cloud
 
 link here [posit](https://posit.cloud/content/5559470)
 
 ```{r}
+if (F) {
 # unzip data file
 unzip("../csv/fb-sa-210305.csv.zip", exdir="../csv")
+}
 ```
 
 ```{r}
@@ -61,12 +85,12 @@ dfp = posts_get(fn='../csv/fb-sa-210305.csv')
 #aggregate measures by organization
 colv = c("e_index","sa_val","sa_int","sa_frq","wc","follow")
 dfo = orgs_aggregate(dfp, colv)
-
+#column indices
 coli = data.frame(test=names(dfo),some=1:length(names(dfo))) %>% filter(!grepl("_se|frq|wc",test)) %>% pull(some)
 knitr::kable(dfo %>% as_tibble() %>% select(all_of(coli)) %>% head(), format="pipe", digits=2, caption='aggregate', booktabs=TRUE)
 ```
 
-## ingest new data
+### ingest new data
 
 ```{r}
 #aggregate measures by organization, add org type variable
@@ -81,3 +105,21 @@ knitr::kable(dto, format="pipe", digits=2, caption='aggregate, org type', bookta
 ```{r}
 sum(table(dto$org_type))
 ```
+
+### scale up
+
+```{r}
+dtp = left_join(dfp, xls, by=join_by(org)) %>% as_tibble()
+table(dtp$org_type)
+sum(table(dtp$org_type))
+#str(dtp)
+write.table(dtp, "../csv/fb-sa-230314.csv", sep="\t", quot=T, row.names=F)
+```
+
+
+
+
+
+
+
+
