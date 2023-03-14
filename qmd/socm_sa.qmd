@@ -12,27 +12,47 @@ format:
 title: scom-org on posit
 ---
 
+## 230329
+
+## 230322
+
+## 230315
+
 ## resume analysis 230314
 
 ```{r}
+#| output: false
+
 if (F) {
 # dependencies
 install.packages("tidyverse")
 install.packages("lme4")
 install.packages("plyr")
+install.packages("quarto")
+#
+quarto::quarto_render("qmd/socm_sa.qmd")
 }
 ```
 
 ```{r}
+#| output: false
+
 #clear workspace
 rm(list=ls())
 #load functions
 source("../src/emo-functions.R")
-#
+```
+
+```{r}
 dtp = read.table("../csv/fb-sa-230314.csv", sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
-dtp[9,]
-str(dtp)
+#dtp[9,]
+#str(dtp)
 #knitr::knit_exit()
+```
+
+```{r}
+ggplot(dtp, aes(org_type, e_index)) +
+  geom_bar(position='dodge', stat='summary', fun='mean')
 ```
 
 ## resume analysis 230305
@@ -70,7 +90,7 @@ install.packages("plyr")
 
 ### start here on posit.cloud
 
-link here [posit](https://posit.cloud/content/5559470)
+link here [posit](https://posit.cloud)
 
 ```{r}
 if (F) {
