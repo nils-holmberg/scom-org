@@ -1,63 +1,107 @@
 ---
 execute:
+  eval: true
   echo: true
   output: true
 engine: knitr
 format:
   html:
     toc: false
-    number-sections: true
+    number-sections: false
     colorlinks: true
     theme: default
 title: scom-org on posit
 ---
 
-## 230329
+## 230329: sentiment analysis
 
-## 230322
+## 230322: growth analysis
 
-## 230315
+### long to wide format
 
-## resume analysis 230314
+## 230315: bivariate org type
 
 ```{r}
+#| eval: true
 #| output: false
+if (T) {
+#load packages
+library("tidyverse")
+library("quarto")
+}
+```
 
+```{r}
+#| eval: true
+#working directory
+if (!grepl("/qmd", getwd(), fixed=T)) {setwd("qmd/")}; getwd();
+#load fb post dataset
+fn = "https://raw.githubusercontent.com/nils-holmberg/scom-org/main/csv/fb-sa-230314.csv"
+fn = "../csv/fb-sa-230314.csv"
+dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+```
+
+```{r, purl=T}
+#wide to long format
+tmp = dtp %>% select(c(1,27,6,11,14,24)) %>% pivot_longer(cols=3:6, names_to="measure", values_to="value")
+#facet plot bivariate
+p = ggplot(tmp, aes(x=org_type, y=value)) +
+  geom_bar(position='dodge', stat='summary', fun='mean') +
+  facet_wrap(vars(measure), scales="free")
+p
+```
+
+## 230314: resume analysis 
+
+```{r, purl=F}
+if (T) {
+knitr::knit_exit()
+#exit()
+#q()
+#stop("here..")
+}
+```
+
+```{r, purl=F}
+#| output: false
 if (F) {
 # dependencies
 install.packages("tidyverse")
 install.packages("lme4")
 install.packages("plyr")
 install.packages("quarto")
-#
-quarto::quarto_render("qmd/socm_sa.qmd")
 }
 ```
 
-```{r}
+```{r, purl=F}
 #| output: false
-
+#working directory
+if (!grepl("/qmd", getwd(), fixed=T)) {setwd("qmd/")}
 #clear workspace
 rm(list=ls())
+#run qmd notebook, dont do this.. 
+#quarto::quarto_render("socm_sa.qmd")
 #load functions
 source("../src/emo-functions.R")
 ```
 
-```{r}
-dtp = read.table("../csv/fb-sa-230314.csv", sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+```{r, purl=F}
+fn = "https://raw.githubusercontent.com/nils-holmberg/scom-org/main/csv/fb-sa-230314.csv"
+fn = "../csv/fb-sa-230314.csv"
+dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
 #dtp[9,]
 #str(dtp)
 #knitr::knit_exit()
 ```
 
-```{r}
+```{r, purl=F}
 ggplot(dtp, aes(org_type, e_index)) +
   geom_bar(position='dodge', stat='summary', fun='mean')
 ```
 
-## resume analysis 230305
+## 230305: resume analysis 
 
-```{r}
+```{r, purl=F}
 if (T) {
 knitr::knit_exit()
 }
@@ -67,7 +111,7 @@ knitr::knit_exit()
 
 some explanations of code cell in markdown..
 
-```{r}
+```{r, purl=F}
 if (F) {
 # clone github repo
 usethis::create_from_github("https://github.com/nils-holmberg/scom-org.git", destdir = "/content/", fork = FALSE)
@@ -79,7 +123,7 @@ unlink("/content/scom-org/", recursive=TRUE)
 }
 ```
 
-```{r}
+```{r, purl=F}
 if (F) {
 # dependencies
 install.packages("tidyverse")
@@ -92,14 +136,14 @@ install.packages("plyr")
 
 link here [posit](https://posit.cloud)
 
-```{r}
+```{r, purl=F}
 if (F) {
 # unzip data file
 unzip("../csv/fb-sa-210305.csv.zip", exdir="../csv")
 }
 ```
 
-```{r}
+```{r, purl=F}
 #clear workspace
 rm(list=ls())
 #load functions
@@ -110,7 +154,7 @@ dfp = posts_get(fn='../csv/fb-sa-210305.csv')
 #
 ```
 
-```{r}
+```{r, purl=F}
 #aggregate measures by organization
 colv = c("e_index","sa_val","sa_int","sa_frq","wc","follow")
 dfo = orgs_aggregate(dfp, colv)
@@ -121,7 +165,7 @@ knitr::kable(dfo %>% as_tibble() %>% select(all_of(coli)) %>% head(), format="pi
 
 ### ingest new data
 
-```{r}
+```{r, purl=F}
 #aggregate measures by organization, add org type variable
 xls = readxl::read_excel("../tmp/fb-org-type-nw.xlsx", sheet=1)
 xls = readxl::read_excel("../tmp/fb-org-type-nw-ng.xlsx", sheet=1)
@@ -131,13 +175,13 @@ dto = left_join(dfo, xls, by=join_by(org))
 knitr::kable(dto, format="pipe", digits=2, caption='aggregate, org type', booktabs=TRUE)
 ```
 
-```{r}
+```{r, purl=F}
 sum(table(dto$org_type))
 ```
 
 ### scale up
 
-```{r}
+```{r, purl=F}
 dtp = left_join(dfp, xls, by=join_by(org)) %>% as_tibble()
 table(dtp$org_type)
 sum(table(dtp$org_type))
