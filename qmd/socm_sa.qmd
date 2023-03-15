@@ -10,7 +10,7 @@ format:
     number-sections: false
     colorlinks: true
     theme: default
-title: scom-org on posit
+title: scom-org colab
 ---
 
 ## 230329: sentiment analysis
@@ -63,6 +63,7 @@ knitr::knit_exit()
 ```
 
 ```{r, purl=F}
+#| eval: false
 #| output: false
 if (F) {
 # dependencies
@@ -74,6 +75,7 @@ install.packages("quarto")
 ```
 
 ```{r, purl=F}
+#| eval: false
 #| output: false
 #working directory
 if (!grepl("/qmd", getwd(), fixed=T)) {setwd("qmd/")}
@@ -86,6 +88,7 @@ source("../src/emo-functions.R")
 ```
 
 ```{r, purl=F}
+#| eval: false
 fn = "https://raw.githubusercontent.com/nils-holmberg/scom-org/main/csv/fb-sa-230314.csv"
 fn = "../csv/fb-sa-230314.csv"
 dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
@@ -95,6 +98,7 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 ```
 
 ```{r, purl=F}
+#| eval: false
 ggplot(dtp, aes(org_type, e_index)) +
   geom_bar(position='dodge', stat='summary', fun='mean')
 ```
@@ -112,6 +116,7 @@ knitr::knit_exit()
 some explanations of code cell in markdown..
 
 ```{r, purl=F}
+#| eval: false
 if (F) {
 # clone github repo
 usethis::create_from_github("https://github.com/nils-holmberg/scom-org.git", destdir = "/content/", fork = FALSE)
@@ -124,6 +129,7 @@ unlink("/content/scom-org/", recursive=TRUE)
 ```
 
 ```{r, purl=F}
+#| eval: false
 if (F) {
 # dependencies
 install.packages("tidyverse")
@@ -137,6 +143,7 @@ install.packages("plyr")
 link here [posit](https://posit.cloud)
 
 ```{r, purl=F}
+#| eval: false
 if (F) {
 # unzip data file
 unzip("../csv/fb-sa-210305.csv.zip", exdir="../csv")
@@ -144,6 +151,7 @@ unzip("../csv/fb-sa-210305.csv.zip", exdir="../csv")
 ```
 
 ```{r, purl=F}
+#| eval: false
 #clear workspace
 rm(list=ls())
 #load functions
@@ -155,6 +163,7 @@ dfp = posts_get(fn='../csv/fb-sa-210305.csv')
 ```
 
 ```{r, purl=F}
+#| eval: false
 #aggregate measures by organization
 colv = c("e_index","sa_val","sa_int","sa_frq","wc","follow")
 dfo = orgs_aggregate(dfp, colv)
@@ -166,6 +175,7 @@ knitr::kable(dfo %>% as_tibble() %>% select(all_of(coli)) %>% head(), format="pi
 ### ingest new data
 
 ```{r, purl=F}
+#| eval: false
 #aggregate measures by organization, add org type variable
 xls = readxl::read_excel("../tmp/fb-org-type-nw.xlsx", sheet=1)
 xls = readxl::read_excel("../tmp/fb-org-type-nw-ng.xlsx", sheet=1)
@@ -176,12 +186,14 @@ knitr::kable(dto, format="pipe", digits=2, caption='aggregate, org type', bookta
 ```
 
 ```{r, purl=F}
+#| eval: false
 sum(table(dto$org_type))
 ```
 
 ### scale up
 
 ```{r, purl=F}
+#| eval: false
 dtp = left_join(dfp, xls, by=join_by(org)) %>% as_tibble()
 table(dtp$org_type)
 sum(table(dtp$org_type))
