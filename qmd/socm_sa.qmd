@@ -15,18 +15,21 @@ title: scom-org colab
 
 ## 230329: sentiment analysis
 
-```{r}
+```{r, purl=T}
 #| eval: true
-#| output: false
+#| output: true
 if (T) {
 #load packages
 library("tidyverse")
 library("quarto")
+#clear workspace
+rm(list=ls())
 }
 ```
 
-```{r}
+```{r, purl=T}
 #| eval: true
+#| output: true
 #working directory
 if (!grepl("/qmd", getwd(), fixed=T)) {setwd("qmd/")}; getwd();
 #load fb post dataset
@@ -38,6 +41,8 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 ## 230322: growth analysis
 
 ```{r, purl=T}
+#| eval: true
+#| output: true
 #engagement over time
 tmp = dtp %>% select(c(1,27,22,11)) %>% head()
 #facet plot bivariate
@@ -48,6 +53,29 @@ tmp = dtp %>% select(c(1,27,22,11)) %>% head()
 ```
 
 ### long to wide format
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+tmp1 = dtp %>% select(c(3,22,11)) %>% 
+group_by(org, month) %>% summarize(e_index_mean=mean(e_index)) %>% 
+pivot_wider(names_from=month, names_glue="month_{month}", values_from=e_index_mean)
+```
+
+### wide to long format
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+tmp2 = tmp1 %>% 
+pivot_longer(cols=2:61, names_to="month", values_to="e_index_mean")
+# line plot
+lp = ggplot(
+data = tmp2 %>% filter(org %in% c("ClownerutanGranser","lakareutangranser")), 
+aes(x=month, y=e_index_mean, group=org, color=org)) +
+  geom_line()
+lp
+```
 
 ## 230315: bivariate org type
 
