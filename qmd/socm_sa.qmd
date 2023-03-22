@@ -15,12 +15,6 @@ title: scom-org colab
 
 ## 230329: sentiment analysis
 
-## 230322: growth analysis
-
-### long to wide format
-
-## 230315: bivariate org type
-
 ```{r}
 #| eval: true
 #| output: false
@@ -40,6 +34,22 @@ fn = "https://raw.githubusercontent.com/nils-holmberg/scom-org/main/csv/fb-sa-23
 fn = "../csv/fb-sa-230314.csv"
 dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
 ```
+
+## 230322: growth analysis
+
+```{r, purl=T}
+#engagement over time
+tmp = dtp %>% select(c(1,27,22,11)) %>% head()
+#facet plot bivariate
+#p = ggplot(tmp, aes(x=org_type, y=value)) +
+#  geom_bar(position='dodge', stat='summary', fun='mean') +
+#  facet_wrap(vars(measure), scales="free")
+#p
+```
+
+### long to wide format
+
+## 230315: bivariate org type
 
 ```{r, purl=T}
 #wide to long format
