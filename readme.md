@@ -25,3 +25,22 @@ line of argument ..
 
 social media communicators..
 
+---
+
+- [internal repo](https://github.com/nils-holmberg/scom-org)
+- [external website](https://nils-holmberg.github.io/scom-org)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
