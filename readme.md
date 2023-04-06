@@ -1,6 +1,6 @@
 # strategic communication, organizations
 
-- some projects will be added here
+- some projects will be added here later
 
 ## user engagment and sentiment measures
 
