@@ -83,10 +83,10 @@ pivot_longer(cols=3:6, names_to="dvs", values_to="e_index")
 
 ### engagement index, dependent variable
 
-  1. e_index_mean: per post e_index average per month
-  2. e_index_mean_norm: normalized per organization values of e_index_mean (1)
-  3. e_index_norm_mean: per post e_index normalized per organization average per month 
-  4. e_index_mean_rel: per post e_index relative to follower count average per month
+1. **e_index_mean**: per post e_index average per month
+2. **e_index_mean_norm**: normalized per organization values of e_index_mean (1)
+3. **e_index_norm_mean**: per post e_index normalized per organization average per month 
+4. **e_index_mean_rel**: per post e_index relative to follower count average per month
 
 ```{r, purl=T}
 #| eval: true
