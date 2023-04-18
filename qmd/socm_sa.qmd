@@ -70,7 +70,8 @@ select(c(2,3,5)) %>% rename(e_index_norm=nv) %>%
 group_by(org, month) %>% summarize(e_index_norm_mean=mean(e_index_norm))
 # dv4
 tmp4 = left_join(tmp1, tmp1 %>% 
-group_by(org) %>% group_modify(~ vals_normalize(.x$month,.x$e_index_mean)) %>% rename(month=id, e_index_mean_norm=nv), by=c("org","month")) %>% select(-c(3))
+group_by(org) %>% group_modify(~ vals_normalize(.x$month,.x$e_index_mean)) %>% 
+rename(month=id, e_index_mean_norm=nv), by=c("org","month")) %>% select(-c(3))
 # dvs, join multiple
 tmp = tmp1 %>% 
 left_join(tmp2, by=c("org","month")) %>% 
@@ -84,7 +85,7 @@ pivot_longer(cols=3:6, names_to="dvs", values_to="e_index")
 ### engagement index, dependent variable
 
 1. **e_index_mean**: per post e_index average per month ("raw engagement scores")
-2. **e_index_mean_norm**: normalized per organization values of e_index_mean (1)
+2. **e_index_mean_norm**: normalized per organization values of **e_index_mean** (1. above)
 3. **e_index_norm_mean**: per post e_index normalized per organization average per month 
 4. **e_index_rel_mean**: per post e_index relative to follower count average per month
 
@@ -108,9 +109,24 @@ lp
 ```{r, purl=T}
 #| eval: true
 #| output: true
-tmp1 = dtp %>% select(c(3,22,11)) %>% 
+dtw = dtp %>% select(c(3,22,11)) %>% 
 group_by(org, month) %>% summarize(e_index_mean=mean(e_index)) %>% 
 pivot_wider(names_from=month, names_glue="month_{month}", values_from=e_index_mean)
+# latent growth model, sem approach
+library(lavaan)
+#dtw %>% names() %>% sort() %>% paste0("1*",.," +", collapse=' ')
+#cnt=0;for (i in dtw %>% names() %>% sort()){cat(paste0(cnt,"*",i," + "));cnt=cnt+1;}
+model <- '
+# intercept
+i =~ 
+1*month_31 + 1*month_32 + 1*month_33 + 1*month_34 + 1*month_35 + 1*month_36 + 1*month_37 + 1*month_38 + 1*month_39 + 1*month_40 + 1*month_41 + 1*month_42 + 1*month_43 + 1*month_44 + 1*month_45 + 1*month_46 + 1*month_47 + 1*month_48 + 1*month_49 + 1*month_50 + 1*month_51 + 1*month_52 + 1*month_53 + 1*month_54 + 1*month_55 + 1*month_56 + 1*month_57 + 1*month_58 + 1*month_59 + 1*month_60 + 1*month_61 + 1*month_62 + 1*month_63 + 1*month_64 + 1*month_65 + 1*month_66 + 1*month_67 + 1*month_68 + 1*month_69 + 1*month_70 + 1*month_71 + 1*month_72 + 1*month_73 + 1*month_74 + 1*month_75 + 1*month_76 + 1*month_77 + 1*month_78 + 1*month_79 + 1*month_80 + 1*month_81 + 1*month_82 + 1*month_83 + 1*month_84 + 1*month_85 + 1*month_86 + 1*month_87 + 1*month_88 + 1*month_89 + 1*month_90 
+# slope
+s =~ 
+0*month_31 + 1*month_32 + 2*month_33 + 3*month_34 + 4*month_35 + 5*month_36 + 6*month_37 + 7*month_38 + 8*month_39 + 9*month_40 + 10*month_41 + 11*month_42 + 12*month_43 + 13*month_44 + 14*month_45 + 15*month_46 + 16*month_47 + 17*month_48 + 18*month_49 + 19*month_50 + 20*month_51 + 21*month_52 + 22*month_53 + 23*month_54 + 24*month_55 + 25*month_56 + 26*month_57 + 27*month_58 + 28*month_59 + 29*month_60 + 30*month_61 + 31*month_62 + 32*month_63 + 33*month_64 + 34*month_65 + 35*month_66 + 36*month_67 + 37*month_68 + 38*month_69 + 39*month_70 + 40*month_71 + 41*month_72 + 42*month_73 + 43*month_74 + 44*month_75 + 45*month_76 + 46*month_77 + 47*month_78 + 48*month_79 + 49*month_80 + 50*month_81 + 51*month_82 + 52*month_83 + 53*month_84 + 54*month_85 + 55*month_86 + 56*month_87 + 57*month_88 + 58*month_89 + 59*month_90
+'
+#
+fit1 <- growth(model, data = dtw)
+summary(fit1, standardized = TRUE)
 ```
 
 ### wide to long format
@@ -118,14 +134,27 @@ pivot_wider(names_from=month, names_glue="month_{month}", values_from=e_index_me
 ```{r, purl=T}
 #| eval: true
 #| output: true
-tmp2 = tmp1 %>% 
-pivot_longer(cols=2:61, names_to="month", values_to="e_index_mean")
+dtl = dtw %>% 
+pivot_longer(cols=2:61, names_to="month", values_to="e_index_mean") %>%
+mutate(month=str_extract(month, "[0-9]+$")) %>% mutate_at(c("month"), as.numeric)
 # line plot
 lp = ggplot(
-data = tmp2 %>% filter(org %in% c("ClownerutanGranser","lakareutangranser")), 
+data = dtl %>% filter(org %in% c("ClownerutanGranser","lakareutangranser")), 
 aes(x=month, y=e_index_mean, group=org, color=org)) +
   geom_line()
 lp
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+dtl %>% 
+  filter(org %in% c("ClownerutanGranser","lakareutangranser")) %>% # select just two orgs
+  ggplot(aes(month, e_index_mean, color = org)) +
+  geom_point() + # points for observations of engagement
+  geom_smooth(method = lm, se = FALSE) + # linear line
+  theme_bw() + # nice theme
+  labs(x = "month", y = "e_index_mean") # nice labels
 ```
 
 ## 230315: bivariate org type
