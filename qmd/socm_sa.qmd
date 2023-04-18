@@ -40,6 +40,23 @@ fn = "../csv/fb-sa-230314.csv"
 dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
 ```
 
+## 230418: growth analysis (cont.)
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+# long format, 8 org_type \* 60 months
+tmp = dtp %>% as_tibble() %>% select(c(27,22,11)) %>% 
+group_by(org_type, month) %>% summarize(e_index_mean=mean(e_index))
+#
+tmp %>% 
+  ggplot(aes(month, e_index_mean, color=as.factor(org_type))) +
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  theme_bw() + 
+  labs(x="month", y="e_index_mean")
+```
+
 ## 230322: growth analysis
 
 ```{r, purl=T}
