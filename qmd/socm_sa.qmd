@@ -45,6 +45,31 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 ```{r, purl=T}
 #| eval: true
 #| output: true
+# load functions
+source("socm_sa_functions.R")
+# aggregate by org
+tmp = dvs_get(dtp)
+# get org_type
+tmp = tmp |> group_by(org) |> mutate(id=row_number()) |> 
+left_join(dtp |> select(3, 27) |> group_by(org) |> mutate(id=row_number()), by=c("org","id"))
+# aggregate by org_type
+tmp = tmp |> group_by(org_type, month) |> summarize(e_index_mean=mean(e_index_mean), e_index_rel_mean=mean(e_index_rel_mean), e_index_norm_mean=mean(e_index_norm_mean), e_index_mean_norm=mean(e_index_mean_norm))
+# dvs, wide to long
+tmp = tmp |> 
+pivot_longer(cols=3:6, names_to="dvs", values_to="e_index")
+# points with trend line
+tmp |> 
+  ggplot(aes(x=month, y=e_index, group=org_type, color=as.factor(org_type))) +
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  facet_wrap(vars(dvs), scales="free") +
+  theme_bw() + 
+  labs(title="engagement trend by org_type and measure", x="month", y="e_index")
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
 # long format, 8 org_type \* 60 months
 tmp = dtp %>% as_tibble() %>% select(c(27,22,11)) %>% 
 group_by(org_type, month) %>% summarize(e_index_mean=mean(e_index))
