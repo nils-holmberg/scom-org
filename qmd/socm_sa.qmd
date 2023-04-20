@@ -48,7 +48,7 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 # load functions
 source("socm_sa_functions.R")
 # aggregate by org
-tmp = dvs_get(dtp)
+tmp = dvs_org_aggregate(dtp)
 # get org_type
 tmp = tmp |> group_by(org) |> mutate(id=row_number()) |> 
 left_join(dtp |> select(3, 27) |> group_by(org) |> mutate(id=row_number()), by=c("org","id"))
@@ -168,7 +168,10 @@ s =~
 '
 #
 fit1 <- growth(model, data = dtw)
-summary(fit1, standardized = TRUE)
+#summary(fit1, standardized = TRUE)
+#install.packages('tidySEM', lib="~/lib/r-cran", dependencies=TRUE)
+library(tidySEM)
+graph_sem(model=fit1)
 ```
 
 ### wide to long format
