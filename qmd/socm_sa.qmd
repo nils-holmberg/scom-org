@@ -167,12 +167,22 @@ s =~
 0*month_31 + 1*month_32 + 2*month_33 + 3*month_34 + 4*month_35 + 5*month_36 + 6*month_37 + 7*month_38 + 8*month_39 + 9*month_40 + 10*month_41 + 11*month_42 + 12*month_43 + 13*month_44 + 14*month_45 + 15*month_46 + 16*month_47 + 17*month_48 + 18*month_49 + 19*month_50 + 20*month_51 + 21*month_52 + 22*month_53 + 23*month_54 + 24*month_55 + 25*month_56 + 26*month_57 + 27*month_58 + 28*month_59 + 29*month_60 + 30*month_61 + 31*month_62 + 32*month_63 + 33*month_64 + 34*month_65 + 35*month_66 + 36*month_67 + 37*month_68 + 38*month_69 + 39*month_70 + 40*month_71 + 41*month_72 + 42*month_73 + 43*month_74 + 44*month_75 + 45*month_76 + 46*month_77 + 47*month_78 + 48*month_79 + 49*month_80 + 50*month_81 + 51*month_82 + 52*month_83 + 53*month_84 + 54*month_85 + 55*month_86 + 56*month_87 + 57*month_88 + 58*month_89 + 59*month_90
 '
 #
-fit1 <- growth(model, data = dtw)
-#summary(fit1, standardized = TRUE)
+fit1 <- growth(model, data=dtw)
+#summary(fit1, standardized=TRUE)
+# visualize path diagram
 #install.packages('tidySEM', lib="~/lib/r-cran", dependencies=TRUE)
 library(tidySEM)
 graph_sem(model=fit1)
+#
+#library(lavaanPlot)
+#lavaanPlot(model=fit1)
+#
+#library("DiagrammeR")
+#library("semPlot")
+#semPaths(fit1, intercept = FALSE, whatLabel = "est", residuals = FALSE, exoCov = FALSE)
 ```
+
+- [link](https://rstudio-pubs-static.s3.amazonaws.com/78926_5aa94ae32fae49f3a384ce885744ef4a.html)
 
 ### wide to long format
 
