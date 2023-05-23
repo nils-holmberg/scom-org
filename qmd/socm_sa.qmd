@@ -53,7 +53,7 @@ knitr::knit_exit()
 }
 ```
 
-## 230523: growth analysis (cont.)
+## 230523: growth analysis (linear mixed effects approach)
 
 ### independent variables, ivs
 
@@ -95,7 +95,9 @@ left_join(tmp3, by=c("id")) |>
 left_join(tmp4, by=c("id")) |> rename(org=org.x)
 #
 m1 = lmer(data=tmp, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + time_norm + (1|org))
-#m1 = lmer(data=tmp, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + (1|org) + (1|as.factor(month)))
+#summary(m1)
+m2 = lmer(data=tmp, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + (1|org_type) + (1|month))
+summary(m2)
 ```
 
 ## 230418: growth analysis (cont.)
