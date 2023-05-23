@@ -45,7 +45,7 @@ dtp = dtp |> mutate(month=month-30)
 
 ```{r, purl=F}
 dtp |> select(org_type, org) |> group_by(org_type) |> summarize(count_distinct=n_distinct(org))
-if (T) {
+if (F) {
 knitr::knit_exit()
 #exit()
 #q()
