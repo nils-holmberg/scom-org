@@ -72,6 +72,16 @@ summary(m1)
 #| eval: true
 #| output: true
 
+# lme modelling
+m2 = lmer(e_index ~ sa_val + follow + month + (1|org_type), data=dtp)
+#
+summary(m2)
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
 #dtp |> slice(1000) 
 #select(org_type, org) |> 
 #group_by(org_type) |> 
