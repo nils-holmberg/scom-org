@@ -40,8 +40,79 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 dtp = dtp |> mutate(month=month-30)
 ```
 
-## 230329: sentiment analysis
+## 231228: summarize results
 
+```{r, purl=T, fig.height=4, fig.width=8}
+#| eval: true
+#| output: true
+
+dtp |> as_tibble() |> 
+select(c(22,27,13,14,17,23,24,25)) |>
+group_by(month, org_type) |>
+summarize_at(vars(1:6), list(mean=mean)) |> 
+pivot_longer(cols=3:8, names_to="sa", values_to="score") |>
+  ggplot(aes(x=month, y=score, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=0.5) + 
+  geom_smooth(method=lm, linewidth=0.5, se=T) +
+  facet_wrap(vars(sa), scales="free")
+#  geom_smooth(method="loess", size=2, se=T)
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+# lme modelling
+m1 = lmer(e_index ~ sa_val + (1|org_type), data=dtp)
+#
+summary(m1)
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+#dtp |> slice(1000) 
+#select(org_type, org) |> 
+#group_by(org_type) |> 
+#full_join(data.frame(org_type=1:10), by=c("org_type"), keep=T) |>
+#summarize(count_distinct=n_distinct(org))
+
+# plot theme
+t_s = 18
+gt = theme(
+strip.text = element_text(size = t_s),
+plot.title = element_text(family = "Helvetica", face = "bold", size = (t_s)), 
+legend.title = element_text(size = (t_s), colour = "black",  face = "bold.italic", family = "Helvetica"), 
+legend.text = element_text(size = (t_s), face = "italic", colour="black",family = "Helvetica"), 
+#legend.key.size = unit(1.5, "cm"),
+axis.title = element_text(family = "Helvetica", size = (t_s), colour = "black", face = "bold"),
+axis.text = element_text(family = "Helvetica", colour = "black", size = (t_s)),
+#aspect.ratio=4/3
+)
+
+# wide to long format
+tmp = dtp |> 
+select(c(1,27,6,11,14,24)) |> 
+pivot_longer(cols=3:6, names_to="measure", values_to="value")
+
+if (F) {
+# descriptives
+library(plyr)
+bp1 <- ddply(dtp[,c(11,27)], c("org_type"), summarise,
+N=length(e_index), mean=mean(e_index), sd=sd(e_index), se=sd/sqrt(N))
+bp1
+
+#facet plot bivariate
+p = ggplot(tmp, aes(x=as.factor(org_type), y=value)) +
+  geom_bar(position='dodge', stat='summary', fun='mean') +
+  facet_wrap(vars(measure), scales="free") +
+  gt
+p
+}
+```
+
+## 230329: sentiment analysis
 
 ```{r, purl=F}
 dtp |> select(org_type, org) |> group_by(org_type) |> summarize(count_distinct=n_distinct(org))
@@ -136,7 +207,7 @@ left_join(tmp4, by=c("id")) |> rename(org=org.x)
 #| output: true
 # lme modelling
 m1 = lmer(data=tmp, subset=out!=1, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + time_norm + (1|org))
-#summary(m1)
+summary(m1)
 #m2 = lmer(data=tmp, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + (1|org_type) + (1|month))
 #m2 = lmer(data=tmp, e_index_norm ~ sa_val_norm + sa_int_norm + follow_norm + (1|month))
 #summary(m2)
