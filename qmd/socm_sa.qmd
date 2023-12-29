@@ -40,6 +40,35 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 dtp = dtp |> mutate(month=month-30)
 ```
 
+## 231229: transformer sentiment
+
+```{r, purl=T, fig.height=4, fig.width=8}
+#| eval: true
+#| output: true
+
+fn = "../csv/fb-sa-231228-001.tsv"
+tmp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+
+# perform inner join
+dts = inner_join(tmp, dtp, by="id") |> as_tibble()
+
+#dts |> names()
+
+long_df <- dts |> select(27,32,19,3,5) |> 
+slice_sample(n=10000) |>
+group_by(month, org_type) |>
+summarize(afinn=mean(sa_val), trans1=mean(sa_numeric_sum), trans2=mean(sa_scaled_sum)) |> 
+#rename(series1=sa_numeric_sum, series2=sa_val) |> 
+#gather(key="series", value="value", -time)
+pivot_longer(cols=3:5, names_to="sa", values_to="score") 
+
+# Plotting with ggplot2
+ggplot(long_df, aes(x=month, y=score, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=0.5) + 
+  geom_smooth(method=lm, linewidth=0.5, se=F) +
+  facet_wrap(vars(sa))#, scales="free")
+```
+
 ## 231228: summarize results
 
 ```{r, purl=T, fig.height=4, fig.width=8}
