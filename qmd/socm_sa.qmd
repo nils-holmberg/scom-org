@@ -46,17 +46,95 @@ dtp = dtp |> mutate(month=month-30)
 #| eval: true
 #| output: true
 
-fn = "../csv/fb-sa-231228-001.tsv"
-tmp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+# Load the necessary library
+#library(readr)
+
+# List of TSV file paths
+#file_paths <- c('path/to/file1.tsv', 'path/to/file2.tsv', 'path/to/file3.tsv') # replace with #actual file paths
+
+# Define the directory containing the TSV files
+directory <- "../csv" # replace with the actual directory path
+
+# Define the pattern to match numbered TSV files with two leading zeroes
+pattern <- "fb-sa-231228-0[0-9]+\\.tsv$" # This pattern matches files like 'file_001.tsv', 'file_002.tsv', etc.
+
+# Create a list of file paths for TSV files matching the pattern
+file_paths <- list.files(directory, pattern = pattern, full.names = TRUE)
+
+# Print the list of file paths
+print(file_paths)
+
+################################################
+
+# Function to read each TSV file into a dataframe
+read_tsv_file <- function(fn) {
+#  read_tsv(file_path)
+  read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+}
+
+# Read each file and store the dataframes in a list
+list_of_dfs <- lapply(file_paths, read_tsv_file)
+
+# Combine all dataframes into one
+combined_df <- do.call(rbind, list_of_dfs)
+
+# Assuming you have a dataframe df with an ID column named 'id'
+# and other columns you want to aggregate
+
+# Separating duplicates and uniques
+duplicates <- combined_df %>% group_by(id) %>% filter(n() > 1)
+uniques <- combined_df %>% group_by(id) %>% filter(n() == 1) %>% ungroup()
+
+# Perform your desired aggregation on the duplicates
+# For example, if you want to calculate the mean of a column named 'value'
+aggregated_duplicates <- duplicates %>% group_by(id) %>%
+summarize(
+sa_numeric_mean=mean(sa_numeric_mean),
+sa_numeric_sum=sum(sa_numeric_sum),
+sa_scaled_mean=mean(sa_scaled_mean),
+sa_scaled_sum=mean(sa_scaled_sum),
+sentence_count=max(sentence_count)
+) %>%
+ungroup()
+
+# Bind the aggregated duplicates back with the uniques
+combined_df <- bind_rows(aggregated_duplicates, uniques)
+
+# View the final dataframe
+dim(combined_df)
+
+# View the combined dataframe
+#paste(dim(dtp), dim(combined_df))
+
+# Find duplicates in the specified column
+#dtp[duplicated(dtp$id) | duplicated(dtp$id, fromLast = TRUE), ]
+#combined_df[duplicated(combined_df$id) | duplicated(combined_df$id, fromLast = TRUE), ]
+
+```
+
+```{r, purl=T, fig.height=4, fig.width=8}
+#| eval: true
+#| output: true
+
+#fn = "../csv/fb-sa-231228-001.tsv"
+#tmp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+
+# Find rows in df1 that don't have matching keys in df2
+#non_matching_df1 <- anti_join(dtp, combined_df, by = "id")
+# Find rows in df2 that don't have matching keys in df1
+#non_matching_df2 <- anti_join(combined_df, dtp, by = "id")
+# View the results
+#print(non_matching_df1)
+#print(non_matching_df2)
 
 # perform inner join
-dts = inner_join(tmp, dtp, by="id") |> as_tibble()
+dts = inner_join(combined_df, dtp, by="id") |> as_tibble()
 
-#dts |> names()
+dts |> names()
 
 long_df <- dts |> select(27,32,19,3,5) |> 
-slice_sample(n=10000) |>
-group_by(month, org_type) |>
+#slice_sample(n=10000) |> 
+group_by(month, org_type) |> 
 summarize(afinn=mean(sa_val), trans1=mean(sa_numeric_sum), trans2=mean(sa_scaled_sum)) |> 
 #rename(series1=sa_numeric_sum, series2=sa_val) |> 
 #gather(key="series", value="value", -time)
@@ -67,6 +145,48 @@ ggplot(long_df, aes(x=month, y=score, group=org_type, color=as.factor(org_type))
   geom_point(size=0.5) + 
   geom_smooth(method=lm, linewidth=0.5, se=F) +
   facet_wrap(vars(sa))#, scales="free")
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+# lme modelling
+m1 = lm(sa_val ~ time + wc, data=dts)
+#
+summary(m1)
+```
+
+### sentiment valence over time 
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+tmp <- dts |> 
+mutate(sa_val_rel=sa_val/(sa_frq+0.01)) |>
+select(27,19,3,33) |> 
+group_by(month) |> 
+summarize(afinn=mean(sa_val), afinn_new=mean(sa_val_rel), trans1=mean(sa_numeric_sum)) |> 
+pivot_longer(cols=2:4, names_to="sa", values_to="score") 
+
+ggplot(tmp, aes(x=month, y=score, group=sa, color=sa)) +
+  geom_point(size=0.5) + 
+  geom_smooth(method=lm, linewidth=0.5, se=F)
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+tmp <- dts |> 
+select(27,6,30) |> 
+group_by(month) |> 
+summarize(sc=mean(sentence_count), wc=mean(wc)) |> 
+pivot_longer(cols=2:3, names_to="measure", values_to="score") |>
+ggplot(aes(x=month, y=score, group=measure, color=measure)) +
+geom_point(size=0.5) + 
+geom_smooth(method=lm, linewidth=0.5, se=F)
 ```
 
 ## 231228: summarize results
