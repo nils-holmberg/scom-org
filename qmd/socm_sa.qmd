@@ -40,6 +40,61 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 dtp = dtp |> mutate(month=month-30)
 ```
 
+## 240103: paper structure
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+fp = "../tmp/fb-sa-240103.csv"
+dts = read.table(fp, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+```
+
+### intro
+
+- RQ1a: how to measure sentiment (transformers)
+- RQ1b: factors that explain sentiment (time, org_type, followers, wordcount)
+- RQ2: effects of sentiment on engagement
+
+### methods
+
+- posts were split into sentences
+- sentences were analyzed with transformers
+- sentiment was aggregated per post (DV)
+- predictors were extracted (RQ1)
+- regression analysis with 
+
+### results
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+# descriptive analysis
+tmp = dts |> 
+select(sa_numeric_sum, time, follow, wc, org_type) |> 
+pivot_longer(cols=1:4, names_to="name", values_to="value")
+
+#facet plot bivariate
+ggplot(tmp, aes(x=org_type, y=value)) +
+  geom_bar(position='dodge', stat='summary', fun='mean') +
+  facet_wrap(vars(name), scales="free")
+```
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+# inferential analysis
+m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)
+#m1 = lm(sa_numeric_sum ~ time + follow + wc + lang, data=dts)
+#
+summary(m1)
+```
+
+### discussion
+
+- some points here
+
 ## 231229: transformer sentiment
 
 ```{r, purl=T, fig.height=4, fig.width=8}
@@ -131,6 +186,7 @@ dim(combined_df)
 dts = inner_join(combined_df, dtp, by="id") |> as_tibble()
 
 dts |> names()
+#write.table(dts, "../tmp/fb-sa-240103.csv", sep="\t", quot=T, row.names=F)
 
 long_df <- dts |> select(27,32,19,3,5) |> 
 #slice_sample(n=10000) |> 
