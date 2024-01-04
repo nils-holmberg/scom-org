@@ -40,6 +40,35 @@ dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 dtp = dtp |> mutate(month=month-30)
 ```
 
+## 240104: sentiment, top and bottom
+
+```{r, purl=T}
+#| eval: true
+#| output: asis
+
+fp = "../tmp/fb-sa-231228-010.tsv"
+tmp = read.table(fp, sep='\t', quote="", comment.char="", header=T, strip.white=TRUE, stringsAsFactors=FALSE)
+
+# Create a single result dataframe
+result_df <- tmp |> left_join(dtp |> select(id, lang), by="id") |> filter(lang=="sv") |> 
+  # Extract the 10 texts with the highest sentiment scores
+  arrange(desc(sa_numeric), desc(sa_score)) %>%
+  mutate(category = "top") %>%
+  head(10) %>%
+  
+  # Bind with the 10 texts with the lowest sentiment scores
+  bind_rows(tmp |> left_join(dtp |> select(id, lang), by="id") |> filter(lang=="sv") |>
+  arrange(sa_numeric, desc(sa_score)) %>%
+  mutate(category = "bottom") %>%
+  head(10)) |>
+
+  select(id, sentence, sa_label)
+
+#install.packages('simplermarkdown', lib="~/lib/r-cran")
+#library(simplermarkdown)
+cat(simplermarkdown::md_table(result_df))
+```
+
 ## 240103: paper structure
 
 ```{r, purl=T}
@@ -58,7 +87,7 @@ dts = read.table(fp, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 ### methods
 
 - posts were split into sentences
-- sentences were analyzed with transformers
+- sentences were analyzed with transformers (neg, neu, pos + confidence)
 - sentiment was aggregated per post (DV)
 - predictors were extracted (RQ1)
 - regression analysis with 
@@ -71,11 +100,18 @@ dts = read.table(fp, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALS
 
 # descriptive analysis
 tmp = dts |> 
-select(sa_numeric_sum, time, follow, wc, org_type) |> 
-pivot_longer(cols=1:4, names_to="name", values_to="value")
-
+select(sa_numeric_sum, sa_val, time, follow, wc, org_type) |> 
+pivot_longer(cols=1:5, names_to="name", values_to="value")
 #facet plot bivariate
 ggplot(tmp, aes(x=org_type, y=value)) +
+  geom_bar(position='dodge', stat='summary', fun='mean') +
+  facet_wrap(vars(name), scales="free")
+
+tmp = dts |> 
+select(sa_numeric_sum, sa_val, time, follow, wc, lang) |> 
+pivot_longer(cols=1:5, names_to="name", values_to="value")
+#facet plot bivariate
+ggplot(tmp, aes(x=lang, y=value)) +
   geom_bar(position='dodge', stat='summary', fun='mean') +
   facet_wrap(vars(name), scales="free")
 ```
@@ -85,8 +121,9 @@ ggplot(tmp, aes(x=org_type, y=value)) +
 #| output: true
 
 # inferential analysis
-m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)
+#m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)
 #m1 = lm(sa_numeric_sum ~ time + follow + wc + lang, data=dts)
+m1 = lmer(sa_val ~ time + follow + wc + lang + (1|org_type), data=dts)
 #
 summary(m1)
 ```
