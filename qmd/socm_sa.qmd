@@ -46,6 +46,7 @@ dtp = dtp |> mutate(month=month-30)
 #| eval: true
 #| output: asis
 
+# get sentence tokenized dataframe
 fp = "../tmp/fb-sa-231228-010.tsv"
 tmp = read.table(fp, sep='\t', quote="", comment.char="", header=T, strip.white=TRUE, stringsAsFactors=FALSE)
 
@@ -121,9 +122,9 @@ ggplot(tmp, aes(x=lang, y=value)) +
 #| output: true
 
 # inferential analysis
-#m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)
+m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)
 #m1 = lm(sa_numeric_sum ~ time + follow + wc + lang, data=dts)
-m1 = lmer(sa_val ~ time + follow + wc + lang + (1|org_type), data=dts)
+#m1 = lmer(sa_val ~ time + follow + wc + lang + (1|org_type), data=dts)
 #
 summary(m1)
 ```

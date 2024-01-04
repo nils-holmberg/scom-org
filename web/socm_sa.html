@@ -3085,27 +3085,28 @@ The following objects are masked from &#39;package:tidyr&#39;:
 </div>
 <section id="sentiment-top-and-bottom" class="level2">
 <h2 class="anchored" data-anchor-id="sentiment-top-and-bottom">240104: sentiment, top and bottom</h2>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fp <span class="ot">=</span> <span class="st">&quot;../tmp/fb-sa-231228-010.tsv&quot;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">=</span> <span class="fu">read.table</span>(fp, <span class="at">sep=</span><span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>, <span class="at">quote=</span><span class="st">&quot;&quot;</span>, <span class="at">comment.char=</span><span class="st">&quot;&quot;</span>, <span class="at">header=</span>T, <span class="at">strip.white=</span><span class="cn">TRUE</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a single result dataframe</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>result_df <span class="ot">&lt;-</span> tmp <span class="sc">|&gt;</span> <span class="fu">left_join</span>(dtp <span class="sc">|&gt;</span> <span class="fu">select</span>(id, lang), <span class="at">by=</span><span class="st">&quot;id&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(lang<span class="sc">==</span><span class="st">&quot;sv&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the 10 texts with the highest sentiment scores</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sa_numeric), <span class="fu">desc</span>(sa_score)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="st">&quot;top&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bind with the 10 texts with the lowest sentiment scores</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(tmp <span class="sc">|&gt;</span> <span class="fu">left_join</span>(dtp <span class="sc">|&gt;</span> <span class="fu">select</span>(id, lang), <span class="at">by=</span><span class="st">&quot;id&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(lang<span class="sc">==</span><span class="st">&quot;sv&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sa_numeric, <span class="fu">desc</span>(sa_score)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="st">&quot;bottom&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, sentence, sa_label)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;simplermarkdown&#39;, lib=&quot;~/lib/r-cran&quot;)</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#library(simplermarkdown)</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(result_df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sentence tokenized dataframe</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fp <span class="ot">=</span> <span class="st">&quot;../tmp/fb-sa-231228-010.tsv&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">=</span> <span class="fu">read.table</span>(fp, <span class="at">sep=</span><span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>, <span class="at">quote=</span><span class="st">&quot;&quot;</span>, <span class="at">comment.char=</span><span class="st">&quot;&quot;</span>, <span class="at">header=</span>T, <span class="at">strip.white=</span><span class="cn">TRUE</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a single result dataframe</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>result_df <span class="ot">&lt;-</span> tmp <span class="sc">|&gt;</span> <span class="fu">left_join</span>(dtp <span class="sc">|&gt;</span> <span class="fu">select</span>(id, lang), <span class="at">by=</span><span class="st">&quot;id&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(lang<span class="sc">==</span><span class="st">&quot;sv&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the 10 texts with the highest sentiment scores</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sa_numeric), <span class="fu">desc</span>(sa_score)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="st">&quot;top&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bind with the 10 texts with the lowest sentiment scores</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(tmp <span class="sc">|&gt;</span> <span class="fu">left_join</span>(dtp <span class="sc">|&gt;</span> <span class="fu">select</span>(id, lang), <span class="at">by=</span><span class="st">&quot;id&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(lang<span class="sc">==</span><span class="st">&quot;sv&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sa_numeric, <span class="fu">desc</span>(sa_score)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">category =</span> <span class="st">&quot;bottom&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, sentence, sa_label)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;simplermarkdown&#39;, lib=&quot;~/lib/r-cran&quot;)</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#library(simplermarkdown)</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(result_df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="table">
 <colgroup>
 <col style="width: 14%">
@@ -3274,46 +3275,46 @@ The following objects are masked from &#39;package:tidyr&#39;:
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inferential analysis</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#m1 = lmer(sa_numeric_sum ~ time + follow + wc + lang + (1|org_type), data=dts)</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#m1 = lm(sa_numeric_sum ~ time + follow + wc + lang, data=dts)</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">=</span> <span class="fu">lmer</span>(sa_val <span class="sc">~</span> time <span class="sc">+</span> follow <span class="sc">+</span> wc <span class="sc">+</span> lang <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>org_type), <span class="at">data=</span>dts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">=</span> <span class="fu">lmer</span>(sa_numeric_sum <span class="sc">~</span> time <span class="sc">+</span> follow <span class="sc">+</span> wc <span class="sc">+</span> lang <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>org_type), <span class="at">data=</span>dts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Some predictor variables are on very different scales: consider
 rescaling</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#m1 = lm(sa_numeric_sum ~ time + follow + wc + lang, data=dts)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#m1 = lmer(sa_val ~ time + follow + wc + lang + (1|org_type), data=dts)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML [&#39;lmerMod&#39;]
-Formula: sa_val ~ time + follow + wc + lang + (1 | org_type)
+Formula: sa_numeric_sum ~ time + follow + wc + lang + (1 | org_type)
    Data: dts
 
-REML criterion at convergence: 584770.8
+REML criterion at convergence: 452753.9
 
 Scaled residuals: 
      Min       1Q   Median       3Q      Max 
--19.3079  -0.4623  -0.1051   0.4441  29.1427 
+-16.5404  -0.5866   0.0118   0.5874  22.5713 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- org_type (Intercept)  0.5878  0.7667  
- Residual             23.9919  4.8982  
+ org_type (Intercept) 0.3036   0.551   
+ Residual             6.1671   2.483   
 Number of obs: 97188, groups:  org_type, 8
 
 Fixed effects:
               Estimate Std. Error t value
-(Intercept)  4.550e+00  6.087e-01   7.475
-time        -2.290e-09  3.537e-10  -6.474
-follow      -6.221e-06  2.443e-07 -25.469
-wc           2.250e-02  3.220e-04  69.879
-langsv       5.103e-01  6.451e-02   7.910
+(Intercept)  2.255e+00  3.381e-01   6.671
+time        -5.278e-10  1.793e-10  -2.943
+follow      -3.457e-06  1.239e-07 -27.909
+wc          -4.003e-04  1.632e-04  -2.452
+langsv      -1.243e-01  3.271e-02  -3.801
 
 Correlation of Fixed Effects:
        (Intr) time   follow wc    
-time   -0.889                     
-follow  0.010 -0.022              
-wc      0.121 -0.147  0.009       
-langsv -0.132  0.046 -0.035 -0.207
+time   -0.812                     
+follow  0.009 -0.022              
+wc      0.110 -0.147  0.009       
+langsv -0.121  0.046 -0.035 -0.207
 fit warnings:
 Some predictor variables are on very different scales: consider rescaling</code></pre>
 </div>
