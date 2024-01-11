@@ -37,7 +37,103 @@ vals_normalize <- function(x,y) {return (data.frame(id=x, nv=(y - min(y)) / (max
 fn = "https://raw.githubusercontent.com/nils-holmberg/scom-org/main/csv/fb-sa-230314.csv"
 fn = "../csv/fb-sa-230314.csv"
 dtp = read.table(fn, sep='\t', header=T, strip.white=TRUE, stringsAsFactors=FALSE)
-dtp = dtp |> mutate(month=month-30)
+dtp = dtp |> as_tibble() |> mutate(month=month-30)
+
+#
+dtp |> names()
+```
+
+## 240110: back to afinn
+
+- översätta till årtal + månad (t.ex. 2015-01)
+- valens, intensitet, wc, sent/wc, över tid 
+
+```{r, purl=T, fig.width=16, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(m0_e_index_rel_follow=e_index/follow) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+group_by(date, org_type) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date)
+    m5_e_index=mean(m0_e_index_rel_follow)
+) 
+#|> 
+#mutate(date=ifelse(seq_along(date) %% 2 == 1, date, "")) |>
+#pivot_longer(cols=3:6, names_to="measure", values_to="score")
+
+tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
+  ggplot(aes(x=date, y=score, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=1.5) + 
+  geom_smooth(method=lm, linewidth=1.5, se=F) +
+  #scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
+  #scale_x_discrete(labels=ifelse(seq_along(tmp$date) %% 2 == 1, tmp$date, "")) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  facet_wrap(vars(measure), scales="free") +
+  labs(
+    title="measures by time",
+    subtitle="sentiment measures and engagement",
+    caption="sentiment is increasing over time, engagment is decreasing",
+    x="date of post",
+    y="score",
+    color="organization type"
+  ) +
+  theme(
+    #legend.position = "top",  # Reposition legend to top
+    #legend.key.size = unit(1, "cm"),  # Change size of legend keys
+    legend.text = element_text(size = 10, face = "bold")  # Change legend text appearance
+  )
+```
+
+- sentiment mått vs engagement index
+- sentiment extremer + exempel poster
+
+```{r, purl=T, fig.width=16, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(m0_e_index_rel_follow=e_index/follow) |>
+group_by(month) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date)
+    m0_e_index=mean(m0_e_index_rel_follow)
+)
+
+tmp |> pivot_longer(cols=2:5, names_to="measure", values_to="score") |>
+  ggplot(aes(x=score, y=m0_e_index)) +
+  geom_point(size=1.5) + 
+  geom_smooth(method=lm, linewidth=1.5, se=F) +
+  facet_wrap(~measure, scales="free", nrow = 2, ncol = 2) +
+  labs(
+    title="engagement by sentiment",
+    subtitle="association between engagement and sentiment",
+    caption="flat or negative trends",
+    x="sentiment",
+    y="engagement",
+    #color="organization type"
+  ) +
+  theme(
+    #legend.position = "top",  # Reposition legend to top
+    #legend.key.size = unit(1, "cm"),  # Change size of legend keys
+    legend.text = element_text(size = 10, face = "bold")  # Change legend text appearance
+  )
 ```
 
 ## 240104: sentiment, top and bottom
