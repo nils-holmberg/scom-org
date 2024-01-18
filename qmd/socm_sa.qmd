@@ -76,8 +76,8 @@ org_type_labs=c(
 tmp = dtp |> as_tibble() |> 
 select(c(19,22,27,14,23,25,11,6)) |>
 mutate(sa_int_rel_wc=sa_int_abs/wc) |>
-mutate(e_index_rel_follow=e_index/follow) |>
-mutate(e_index_rel_follow=e_index) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
 #mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
 mutate(date=as.Date(date)) |>
 mutate(date=format(date, "%Y-%m")) |>
@@ -88,7 +88,7 @@ summarize(
     m3_wc=mean(wc),
     m4_sa_int_rel_wc=mean(sa_int_rel_wc),
     #date=first(date)
-    m5_e_index=mean(e_index_rel_follow)
+    m5_e_index=mean(e_index_rel)
 ) 
 #|> 
 #mutate(date=ifelse(seq_along(date) %% 2 == 1, date, "")) |>
@@ -146,8 +146,8 @@ tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
 tmp = dtp |> 
 select(c(19,22,27,14,23,25,11,6)) |>
 mutate(sa_int_rel_wc=sa_int_abs/wc) |>
-mutate(m0_e_index_rel_follow=e_index/follow) |>
-mutate(m0_e_index_rel_follow=e_index) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
 group_by(month) |>
 summarize(
     m1_sa_val=mean(sa_val),
@@ -155,7 +155,7 @@ summarize(
     m3_wc=mean(wc),
     m4_sa_int_rel_wc=mean(sa_int_rel_wc),
     #date=first(date)
-    m0_e_index=mean(m0_e_index_rel_follow)
+    m0_e_index=mean(e_index_rel)
 )
 
 tmp |> pivot_longer(cols=2:5, names_to="measure", values_to="score") |>

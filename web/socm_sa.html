@@ -3121,8 +3121,8 @@ The following objects are masked from &#39;package:tidyr&#39;:
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">=</span> dtp <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">c</span>(<span class="dv">19</span>,<span class="dv">22</span>,<span class="dv">27</span>,<span class="dv">14</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">11</span>,<span class="dv">6</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">sa_int_rel_wc=</span>sa_int_abs<span class="sc">/</span>wc) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel_follow=</span>e_index<span class="sc">/</span>follow) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel_follow=</span>e_index) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel=</span>e_index<span class="sc">/</span>follow) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel=</span>e_index) <span class="sc">|&gt;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#mutate(date=as.POSIXct(time, origin=&quot;1970-01-01&quot;, tz=&quot;UTC&quot;)) |&gt;</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">date=</span><span class="fu">as.Date</span>(date)) <span class="sc">|&gt;</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">date=</span><span class="fu">format</span>(date, <span class="st">&quot;%Y-%m&quot;</span>)) <span class="sc">|&gt;</span></span>
@@ -3133,7 +3133,7 @@ The following objects are masked from &#39;package:tidyr&#39;:
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">m3_wc=</span><span class="fu">mean</span>(wc),</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">m4_sa_int_rel_wc=</span><span class="fu">mean</span>(sa_int_rel_wc),</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#date=first(date)</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">m5_e_index=</span><span class="fu">mean</span>(e_index_rel_follow)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">m5_e_index=</span><span class="fu">mean</span>(e_index_rel)</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by &#39;date&#39;. You can override using the
@@ -3198,8 +3198,8 @@ The following objects are masked from &#39;package:tidyr&#39;:
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">=</span> dtp <span class="sc">|&gt;</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">c</span>(<span class="dv">19</span>,<span class="dv">22</span>,<span class="dv">27</span>,<span class="dv">14</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">11</span>,<span class="dv">6</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">sa_int_rel_wc=</span>sa_int_abs<span class="sc">/</span>wc) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">m0_e_index_rel_follow=</span>e_index<span class="sc">/</span>follow) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">m0_e_index_rel_follow=</span>e_index) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel=</span>e_index<span class="sc">/</span>follow) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">e_index_rel=</span>e_index) <span class="sc">|&gt;</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(month) <span class="sc">|&gt;</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">m1_sa_val=</span><span class="fu">mean</span>(sa_val),</span>
@@ -3207,7 +3207,7 @@ The following objects are masked from &#39;package:tidyr&#39;:
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">m3_wc=</span><span class="fu">mean</span>(wc),</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">m4_sa_int_rel_wc=</span><span class="fu">mean</span>(sa_int_rel_wc),</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#date=first(date)</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">m0_e_index=</span><span class="fu">mean</span>(m0_e_index_rel_follow)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">m0_e_index=</span><span class="fu">mean</span>(e_index_rel)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>tmp <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">names_to=</span><span class="st">&quot;measure&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;score&quot;</span>) <span class="sc">|&gt;</span></span>
