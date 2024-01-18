@@ -51,6 +51,51 @@ dtp |> names()
 #| eval: true
 #| output: true
 
+tmp <- dtp |> 
+  select(c(19,22,27,14,23,25,11,6)) |>
+  mutate(
+    m1_sa_val=sa_val,
+    m2_sa_int_abs=sa_int_abs,
+    m3_wc=wc,
+    m4_sa_int_rel=sa_int_abs / wc,
+  ) |> 
+  filter(
+    e_index < 10000,
+    m1_sa_val < 100,
+    m2_sa_int_abs < 50,
+    m3_wc < 500,
+    m4_sa_int_rel < 5
+  ) |>
+  sample_n(size = 90000)
+
+#tmp |> as_tibble()
+
+if (T) {
+# Create the plot
+tmp |> pivot_longer(cols=c(9:12), names_to="measure", values_to="score") |>
+  ggplot(aes(x=score, y=e_index)) +
+  geom_point(size=0.5) + 
+  geom_smooth(method="lm", linewidth=1.0, se=FALSE) +
+  facet_wrap(~measure, scales="free", nrow = 2, ncol = 2) +
+  labs(
+    title="Engagement by Sentiment",
+    subtitle="Association Between Engagement and Sentiment",
+    caption="",
+    x="Sentiment",
+    y="Engagement"
+  ) +
+  theme(
+    legend.text = element_text(size = 10, face = "bold")
+  )
+}
+```
+
+## 240118: boxplot measures
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
 org_type_labs=c(
 "culture and recreation",
 "education and research",
