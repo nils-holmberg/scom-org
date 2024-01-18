@@ -87,8 +87,9 @@ summarize(
     m2_sa_int_abs=mean(sa_int_abs),
     m3_wc=mean(wc),
     m4_sa_int_rel_wc=mean(sa_int_rel_wc),
-    #date=first(date)
-    m5_e_index=mean(e_index_rel)
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
 ) 
 #|> 
 #mutate(date=ifelse(seq_along(date) %% 2 == 1, date, "")) |>
@@ -101,12 +102,13 @@ custom_labeller <- function(variable, value) {
   m2_sa_int_abs="sentiment intensity",
   m3_wc="word count", 
   m4_sa_int_rel_wc="sentiment relative",
-  m5_e_index="engagement index"
+  m5_e_index="engagement index",
+  m6_follow="follower count"
   )
   return(custom_labels[value])
 }
 
-tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
+tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
   ggplot(aes(x=date, y=score, group=org_type, color=as.factor(org_type))) +
   geom_point(size=1.5) + 
   geom_smooth(method=lm, linewidth=1.5, se=F) +
