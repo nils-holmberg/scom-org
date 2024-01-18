@@ -66,16 +66,24 @@ tmp <- dtp |>
     m3_wc < 500,
     m4_sa_int_rel < 5
   ) |>
-  sample_n(size = 90000)
+  sample_n(size = 10000)
 
 #tmp |> as_tibble()
+library(mgcv)
 
 if (T) {
 # Create the plot
 tmp |> pivot_longer(cols=c(9:12), names_to="measure", values_to="score") |>
   ggplot(aes(x=score, y=e_index)) +
   geom_point(size=0.5) + 
-  geom_smooth(method="lm", linewidth=1.0, se=FALSE) +
+  geom_smooth(method="lm", se=FALSE, linewidth=1.0, color="blue") +
+  # quadratic fit
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE) + 
+  # cubic fit
+  geom_smooth(method = "lm", formula = y ~ poly(x, 3), se = FALSE) + 
+  geom_smooth(method = "lm", formula = y ~ splines::bs(x, degree = 3), se = FALSE) + 
+  geom_smooth(method="loess", se=FALSE, linewidth=1.0, color="red") +
+  geom_smooth(method = "gam") + 
   facet_wrap(~measure, scales="free", nrow = 2, ncol = 2) +
   labs(
     title="Engagement by Sentiment",
