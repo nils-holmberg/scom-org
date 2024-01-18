@@ -45,12 +45,31 @@ dtp = dtp |> as_tibble() |> mutate(month=month-30)
 dtp |> names()
 ```
 
+## 240118: back to org_type
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+org_type_labs=c(
+"culture and recreation",
+"education and research",
+"health",
+"social services ",
+"environment",
+"development and housing",
+"law, advocacy an politics",
+#"philantropic intermediaries and voluntarism promotion",
+"international"
+)
+```
+
 ## 240110: back to afinn
 
 - översätta till årtal + månad (t.ex. 2015-01)
 - valens, intensitet, wc, sent/wc, över tid 
 
-```{r, purl=T, fig.width=16, fig.height=10}
+```{r, purl=T, fig.width=20, fig.height=10}
 #| eval: true
 #| output: true
 
@@ -75,6 +94,18 @@ summarize(
 #mutate(date=ifelse(seq_along(date) %% 2 == 1, date, "")) |>
 #pivot_longer(cols=3:6, names_to="measure", values_to="score")
 
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index"
+  )
+  return(custom_labels[value])
+}
+
 tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
   ggplot(aes(x=date, y=score, group=org_type, color=as.factor(org_type))) +
   geom_point(size=1.5) + 
@@ -83,8 +114,9 @@ tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
   #scale_x_discrete(labels=ifelse(seq_along(tmp$date) %% 2 == 1, tmp$date, "")) +
   #scale_x_discrete(labels=ifelse((1:60 - 1) %% 4 == 0, as.character(1:60), "")) +
   scale_x_discrete(labels=ifelse(seq_along(sort(unique(tmp$date))) %% 4 == 1, sort(unique(tmp$date)), "")) +
+  scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
   theme(axis.text.x=element_text(angle=90, hjust=1)) +
-  facet_wrap(vars(measure), scales="free") +
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
   labs(
     title="measures by time",
     subtitle="sentiment measures and engagement",
@@ -94,11 +126,13 @@ tmp |> pivot_longer(cols=3:7, names_to="measure", values_to="score") |>
     color="organization type"
   ) +
   theme(
-    plot.title = element_text(size = rel(5.0)),
+    text=element_text(size=rel(5.0)),
+    plot.title = element_text(size=rel(5.0), face="bold"),
+    strip.text = element_text(size=rel(5.0)),
     #legend.position = "top",
     #legend.key.size = unit(1, "cm"),
-    legend.text = element_text(size=rel(5.0), face = "bold"),
-    text=element_text(size=rel(5.0))
+    legend.title = element_text(size=rel(5.0), face="bold"),
+    legend.text = element_text(size=rel(5.0)),
   )
 ```
 
