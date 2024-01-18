@@ -45,7 +45,7 @@ dtp = dtp |> as_tibble() |> mutate(month=month-30)
 dtp |> names()
 ```
 
-## 240118: back to org_type
+## 240118: boxplot measures
 
 ```{r, purl=T}
 #| eval: true
@@ -62,6 +62,138 @@ org_type_labs=c(
 #"philantropic intermediaries and voluntarism promotion",
 "international"
 )
+```
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+group_by(date, org_type) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
+  ggplot(aes(x=measure, y=score, fill=as.factor(org_type))) +
+  geom_boxplot() +
+  scale_fill_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
+  labs(
+    title="measures descriptives",
+    subtitle="sentiment measures and engagement",
+    caption="",
+    x="measure",
+    y="score",
+    fill="organization type"
+  ) +
+  theme(
+    text=element_text(size=rel(5.0)),
+    plot.title = element_text(size=rel(5.0), face="bold"),
+    strip.text = element_text(size=rel(5.0)),
+    #axis.text.x=element_text(angle=90, hjust=1),
+    axis.text.x=element_blank(),  # Omit x-axis text
+    axis.ticks.x=element_blank(), # Omit x-axis ticks
+    legend.title = element_text(size=rel(5.0), face="bold"),
+    legend.text = element_text(size=rel(5.0)),
+  )
+```
+
+## 240118: measures over time, without org_type
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+#group_by(date, org_type) |>
+group_by(date) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+#tmp |> as_tibble()
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> pivot_longer(cols=2:7, names_to="measure", values_to="score") |>
+  ggplot(aes(x=as.Date(paste0(date,"-01")), y=score)) + #, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=1.5) + 
+  geom_smooth(method=lm, formula = y ~ x, se=F, linewidth=1.5, color="blue") +
+  #scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
+  #scale_x_discrete(labels=ifelse(seq_along(tmp$date) %% 2 == 1, tmp$date, "")) +
+  #scale_x_discrete(labels=ifelse((1:60 - 1) %% 4 == 0, as.character(1:60), "")) +
+  #scale_x_discrete(labels=ifelse(seq_along(sort(unique(tmp$date))) %% 4 == 1, sort(unique(tmp$date)), "")) +
+  #scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
+  labs(
+    title="measures by time",
+    subtitle="sentiment measures and engagement",
+    caption="sentiment is increasing over time, engagment is decreasing",
+    x="date of post",
+    y="score",
+    #color="blue"
+  ) +
+  theme(
+    text=element_text(size=rel(5.0)),
+    plot.title=element_text(size=rel(5.0), face="bold"),
+    strip.text=element_text(size=rel(5.0)),
+    #axis.text.x=element_text(angle=0, hjust=1),
+    #legend.position = "top",
+    #legend.key.size = unit(1, "cm"),
+    #legend.title = element_text(size=rel(5.0), face="bold"),
+    #legend.text = element_text(size=rel(5.0)),
+  )
 ```
 
 ## 240110: back to afinn
@@ -91,9 +223,6 @@ summarize(
     m5_e_index=mean(e_index_rel),
     m6_follow=mean(follow)
 ) 
-#|> 
-#mutate(date=ifelse(seq_along(date) %% 2 == 1, date, "")) |>
-#pivot_longer(cols=3:6, names_to="measure", values_to="score")
 
 # Custom labeller function with individual variable names
 custom_labeller <- function(variable, value) {
@@ -109,18 +238,18 @@ custom_labeller <- function(variable, value) {
 }
 
 tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
+  #ggplot(aes(x=as.Date(paste0(date,"-01")), y=score, group=org_type, color=as.factor(org_type))) +
   ggplot(aes(x=date, y=score, group=org_type, color=as.factor(org_type))) +
   geom_point(size=1.5) + 
-  geom_smooth(method=lm, linewidth=1.5, se=F) +
+  geom_smooth(method=lm, formula=y~x, se=F, linewidth=1.5) +
   #scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
   #scale_x_discrete(labels=ifelse(seq_along(tmp$date) %% 2 == 1, tmp$date, "")) +
   #scale_x_discrete(labels=ifelse((1:60 - 1) %% 4 == 0, as.character(1:60), "")) +
   scale_x_discrete(labels=ifelse(seq_along(sort(unique(tmp$date))) %% 4 == 1, sort(unique(tmp$date)), "")) +
   scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
-  theme(axis.text.x=element_text(angle=90, hjust=1)) +
   facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
   labs(
-    title="measures by time",
+    title="measures over time",
     subtitle="sentiment measures and engagement",
     caption="sentiment is increasing over time, engagment is decreasing",
     x="date of post",
@@ -131,6 +260,7 @@ tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
     text=element_text(size=rel(5.0)),
     plot.title = element_text(size=rel(5.0), face="bold"),
     strip.text = element_text(size=rel(5.0)),
+    axis.text.x=element_text(angle=90, hjust=1),
     #legend.position = "top",
     #legend.key.size = unit(1, "cm"),
     legend.title = element_text(size=rel(5.0), face="bold"),
