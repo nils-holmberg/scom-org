@@ -31,6 +31,7 @@ rm(list=ls())
 ```{r, purl=T}
 #| eval: true
 #| output: true
+
 # working directory
 if (!grepl("/qmd", getwd(), fixed=T)) {setwd("qmd/")}; getwd();
 # load functions
@@ -43,6 +44,104 @@ dtp = dtp |> as_tibble() |> mutate(month=month-30)
 
 #
 dtp |> names()
+```
+
+## 240119: table descriptives
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+tmp = dtp |> 
+  select(c(19,22,3,27,14,23,25,11,6)) |>
+  mutate(date=as.Date(date)) |>
+  mutate(date=format(date, "%Y-%m")) |>
+  mutate(
+    m1_sa_val=sa_val,
+    m2_sa_int_abs=sa_int_abs,
+    m3_wc=wc,
+    m4_sa_int_rel=sa_int_abs / wc,
+    m5_e_index=e_index,
+    m6_follow=follow,
+    m7_date=date
+  )
+#write.table(tmp, "/tmp/scom/fb-sa-240119.tsv", sep="\t", quot=T, row.names=F)
+```
+
+- select columns
+- sample 1000 rows
+- summarize chatgpt
+- min(time), max(time)
+- plot gantt diagram
+- mean(measures)
+- sd(measures)
+- by org, org_type
+
+### aggregate measures by org
+
+```{r, purl=T}
+#| eval: true
+#| output: asis
+
+# Aggregate the data
+aggregated_data <- tmp %>%
+  select(starts_with("m1_"), starts_with("m2_"), starts_with("m3_"),
+         starts_with("m4_"), starts_with("m5_"), starts_with("m6_"),
+         starts_with("m7_"), org) %>%
+  group_by(org) %>%
+  summarize(across(starts_with("m1_"):starts_with("m6_"),
+                   list(mean = ~ mean(., na.rm = TRUE),
+                        sd = ~ sd(., na.rm = TRUE))),
+            m7_first = first(m7_date),
+            m7_last = last(m7_date))
+
+# View the aggregated data
+result_df = aggregated_data |> as_tibble()
+cat(simplermarkdown::md_table(result_df))
+```
+
+```{r, purl=T, fig.width=10, fig.height=40}
+#| eval: true
+#| output: true
+
+# Convert 'm7_first' and 'm7_last' to Date type
+pd <- result_df %>%
+  mutate(m7_first = as.Date(paste0(m7_first,"-01")),
+         m7_last = as.Date(paste0(m7_last,"-01")))
+
+# Reorder 'org' alphabetically and reverse the levels to put the first alphabetically at the top
+pd$org <- factor(pd$org, levels = rev(sort(unique(pd$org))))
+
+# Create a Gantt chart
+ggplot(pd, aes(y = org, x = m7_first, xend = m7_last, yend = org)) +
+  geom_segment(size = 6, color = "blue") +
+  theme_minimal() +
+  labs(title = "Gantt Chart of Organizations and Date Ranges", 
+       x = "Date", y = "Organization") +
+  theme(axis.text.y = element_text(size = rel(1.5)))  # Increased font size for y-axis labels
+```
+
+### aggregate measures by org_type
+
+```{r, purl=T}
+#| eval: true
+#| output: asis
+
+# Aggregate the data
+aggregated_data <- tmp %>%
+  select(starts_with("m1_"), starts_with("m2_"), starts_with("m3_"),
+         starts_with("m4_"), starts_with("m5_"), starts_with("m6_"),
+         starts_with("m7_"), org_type) %>%
+  group_by(org_type) %>%
+  summarize(across(starts_with("m1_"):starts_with("m6_"),
+                   list(mean = ~ mean(., na.rm = TRUE),
+                        sd = ~ sd(., na.rm = TRUE))),
+            m7_first = first(m7_date),
+            m7_last = last(m7_date))
+
+# View the aggregated data
+result_df = aggregated_data |> as_tibble()
+cat(simplermarkdown::md_table(result_df))
 ```
 
 ## 240118: boxplot measures
@@ -68,10 +167,9 @@ tmp <- dtp |>
   ) |>
   sample_n(size = 10000)
 
-#tmp |> as_tibble()
-library(mgcv)
+tmp |> as_tibble()
 
-if (T) {
+library(mgcv)
 # Create the plot
 tmp |> pivot_longer(cols=c(9:12), names_to="measure", values_to="score") |>
   ggplot(aes(x=score, y=e_index)) +
@@ -95,7 +193,6 @@ tmp |> pivot_longer(cols=c(9:12), names_to="measure", values_to="score") |>
   theme(
     legend.text = element_text(size = 10, face = "bold")
   )
-}
 ```
 
 ## 240118: boxplot measures
