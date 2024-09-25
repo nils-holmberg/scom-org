@@ -17,12 +17,14 @@ title: scom-org colab
 #| eval: true
 #| output: true
 
-#install.packages(c('tidyverse','lme4'))
+#install.packages(c('stringi'), lib="~/lib/r-cran", dependencies=TRUE)
+#install.packages(c('tidyverse','lme4'), lib="~/lib/r-cran", dependencies=TRUE)
 if (T) {
 # load packages
 library("tidyverse")
 #library("quarto")
 library("lme4")
+library(viridis)
 # clear workspace
 rm(list=ls())
 }
@@ -44,6 +46,303 @@ dtp = dtp |> as_tibble() |> mutate(month=month-30)
 
 #
 dtp |> names()
+```
+
+## 240925: update figures
+
+```{r, purl=T}
+#| eval: true
+#| output: true
+
+org_type_labs=c(
+"culture and recreation",
+"education and research",
+"health",
+"social services ",
+"environment",
+"development and housing",
+"law, advocacy an politics",
+#"philantropic intermediaries and voluntarism promotion",
+"international"
+)
+```
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+group_by(date, org_type) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> 
+  pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
+  ggplot(aes(x=measure, y=score, fill=as.factor(org_type))) +
+  geom_boxplot() +
+  #scale_fill_viridis(discrete = TRUE) + 
+  scale_fill_viridis_d(labels=org_type_labs) + 
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
+  labs(
+    title="Measures Descriptives",
+    subtitle="Post Sentiment and User Engagement Measures",
+    caption="",
+    x="Measure",
+    y="Score",
+    fill="Organization Field"
+  ) +
+  theme(
+    text=element_text(size=rel(5.0)),
+    plot.title = element_text(size=rel(5.0), face="bold"),
+    strip.text = element_text(size=rel(5.0)),
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
+    legend.title = element_text(size=rel(5.0), face="bold"),
+    legend.text = element_text(size=rel(5.0))
+  )
+```
+
+## 240925: measures over time
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+#group_by(date, org_type) |>
+group_by(date) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+#tmp |> as_tibble()
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> 
+  pivot_longer(cols = 2:7, names_to = "measure", values_to = "score") |>
+  ggplot(aes(x = as.Date(paste0(date, "-01")), y = score, color = measure)) + 
+  geom_point(size = 1.5) + 
+  geom_smooth(method = lm, formula = y ~ x, se = FALSE, linewidth = 1.5) + 
+  facet_wrap(vars(measure), scales = "free", labeller = as_labeller(custom_labeller)) +
+  scale_color_viridis_d() +  # Use viridis for discrete color scales
+  labs(
+    title = "Measures Over Time",
+    subtitle = "Post Sentiment and User Engagement Measures",
+    caption = "Sentiment is increasing over time, engagement is decreasing",
+    x = "Date of Post",
+    y = "Score"
+  ) +
+  theme(
+    text = element_text(size = rel(5.0)),
+    plot.title = element_text(size = rel(5.0), face = "bold"),
+    strip.text = element_text(size = rel(5.0)),
+    legend.position = "none"  # Suppress legend
+  )
+```
+
+## 240120: viridis colors
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+group_by(date, org_type) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+org_type_labs=c(
+"culture and recreation",
+"education and research",
+"health",
+"social services ",
+"environment",
+"development and housing",
+"law, advocacy an politics",
+#"philantropic intermediaries and voluntarism promotion",
+"international"
+)
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
+  ggplot(aes(x=date, y=score, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=1.5) + 
+  geom_smooth(method=lm, formula=y~x, se=F, linewidth=1.5) +
+  scale_x_discrete(labels=ifelse(seq_along(sort(unique(tmp$date))) %% 4 == 1, sort(unique(tmp$date)), "")) +
+  scale_color_viridis_d(labels=org_type_labs) + 
+  #scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
+  labs(
+    title="measures over time",
+    subtitle="sentiment measures and engagement",
+    caption="sentiment is increasing over time, engagment is decreasing",
+    x="date of post",
+    y="score",
+    color="organization type"
+  ) +
+  theme(
+    text=element_text(size=rel(5.0)),
+    plot.title = element_text(size=rel(5.0), face="bold"),
+    strip.text = element_text(size=rel(5.0)),
+    axis.text.x=element_text(angle=90, hjust=1),
+    #legend.position = "top",
+    #legend.key.size = unit(1, "cm"),
+    legend.title = element_text(size=rel(5.0), face="bold"),
+    legend.text = element_text(size=rel(5.0)),
+  )
+```
+
+## 240120: intensities
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,24,25,11,6)) |>
+mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+#group_by(date, org_type) |>
+group_by(date) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+
+    m5_sa_int_sqrt=mean(sa_int),
+    
+    #date=first(date),
+    m6_e_index=mean(e_index_rel),
+    m7_follow=mean(follow)
+) 
+
+#tmp |> as_tibble()
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  m4_sa_int_rel_wc="intensity relative",
+  m5_sa_int_sqrt="intensity transformed",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> pivot_longer(cols=2:8, names_to="measure", values_to="score") |>
+  ggplot(aes(x=as.Date(paste0(date,"-01")), y=score)) + #, group=org_type, color=as.factor(org_type))) +
+  geom_point(size=1.5) + 
+  geom_smooth(method=lm, formula = y ~ x, se=F, linewidth=1.5, color="blue") +
+  #scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
+  #scale_x_discrete(labels=ifelse(seq_along(tmp$date) %% 2 == 1, tmp$date, "")) +
+  #scale_x_discrete(labels=ifelse((1:60 - 1) %% 4 == 0, as.character(1:60), "")) +
+  #scale_x_discrete(labels=ifelse(seq_along(sort(unique(tmp$date))) %% 4 == 1, sort(unique(tmp$date)), "")) +
+  #scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
+  facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
+  labs(
+    title="measures by time",
+    subtitle="sentiment measures and engagement",
+    caption="sentiment is increasing over time, engagment is decreasing",
+    x="date of post",
+    y="score",
+    #color="blue"
+  ) +
+  theme(
+    text=element_text(size=rel(5.0)),
+    plot.title=element_text(size=rel(5.0), face="bold"),
+    strip.text=element_text(size=rel(5.0)),
+    #axis.text.x=element_text(angle=0, hjust=1),
+    #legend.position = "top",
+    #legend.key.size = unit(1, "cm"),
+    #legend.title = element_text(size=rel(5.0), face="bold"),
+    #legend.text = element_text(size=rel(5.0)),
+  )
 ```
 
 ## 240119: table descriptives
@@ -93,11 +392,23 @@ aggregated_data <- tmp %>%
                    list(mean = ~ mean(., na.rm = TRUE),
                         sd = ~ sd(., na.rm = TRUE))),
             m7_first = first(m7_date),
-            m7_last = last(m7_date))
+            m7_last = last(m7_date)) %>%
+#  mutate(org = str_trim(org)) %>%  # Trim leading/trailing spaces
+#  mutate(org = tolower(org)) %>%  # Convert to lowercase for case-insensitive sorting
+#  arrange(org)  # Arrange by 'org' alphabetically
+  mutate(org = factor(org, levels = sort(unique(org)))) %>%  # Convert 'org' to factor and sort
+  arrange(org)  # Arrange by 'org'
 
 # View the aggregated data
 result_df = aggregated_data |> as_tibble()
 cat(simplermarkdown::md_table(result_df))
+```
+
+```{r, purl=T, fig.width=10, fig.height=40}
+#| eval: true
+#| output: true
+
+dtp |> select(org, time) |> group_by(org) |> summarize(min_dur=min(max(time)-min(time))) |> arrange(min_dur) |> head()
 ```
 
 ```{r, purl=T, fig.width=10, fig.height=40}
@@ -127,24 +438,25 @@ ggplot(pd, aes(y = org, x = m7_first, xend = m7_last, yend = org)) +
 #| eval: true
 #| output: asis
 
-# Aggregate the data
+# Aggregate the data with added count of org_type
 aggregated_data <- tmp %>%
   select(starts_with("m1_"), starts_with("m2_"), starts_with("m3_"),
          starts_with("m4_"), starts_with("m5_"), starts_with("m6_"),
          starts_with("m7_"), org_type) %>%
   group_by(org_type) %>%
-  summarize(across(starts_with("m1_"):starts_with("m6_"),
+  summarize(org_count = n(),  # Count the number of occurrences of each org_type
+            across(starts_with("m1_"):starts_with("m6_"),
                    list(mean = ~ mean(., na.rm = TRUE),
                         sd = ~ sd(., na.rm = TRUE))),
             m7_first = first(m7_date),
             m7_last = last(m7_date))
 
-# View the aggregated data
+# View the aggregated data with org_type count
 result_df = aggregated_data |> as_tibble()
 cat(simplermarkdown::md_table(result_df))
 ```
 
-## 240118: boxplot measures
+## 240118: sentiment and egagement
 
 ```{r, purl=T}
 #| eval: true
@@ -250,28 +562,29 @@ custom_labeller <- function(variable, value) {
   return(custom_labels[value])
 }
 
-tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
+tmp |> 
+  pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
   ggplot(aes(x=measure, y=score, fill=as.factor(org_type))) +
   geom_boxplot() +
-  scale_fill_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
+  #scale_fill_viridis(discrete = TRUE) + 
+  scale_fill_viridis_d(labels=org_type_labs) + 
   facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
   labs(
-    title="measures descriptives",
-    subtitle="sentiment measures and engagement",
+    title="Measures Descriptives",
+    subtitle="Sentiment Measures and Engagement",
     caption="",
-    x="measure",
-    y="score",
-    fill="organization type"
+    x="Measure",
+    y="Score",
+    fill="Organization Type"
   ) +
   theme(
     text=element_text(size=rel(5.0)),
     plot.title = element_text(size=rel(5.0), face="bold"),
     strip.text = element_text(size=rel(5.0)),
-    #axis.text.x=element_text(angle=90, hjust=1),
-    axis.text.x=element_blank(),  # Omit x-axis text
-    axis.ticks.x=element_blank(), # Omit x-axis ticks
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
     legend.title = element_text(size=rel(5.0), face="bold"),
-    legend.text = element_text(size=rel(5.0)),
+    legend.text = element_text(size=rel(5.0))
   )
 ```
 
