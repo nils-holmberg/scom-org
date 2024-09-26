@@ -116,7 +116,7 @@ tmp |>
     caption="",
     x="Measure",
     y="Score",
-    fill="Organization Field"
+    fill="Organizational Field"
   ) +
   theme(
     text=element_text(size=rel(5.0)),
