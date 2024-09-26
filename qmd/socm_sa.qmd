@@ -404,6 +404,8 @@ result_df = aggregated_data |> as_tibble()
 cat(simplermarkdown::md_table(result_df))
 ```
 
+### duration of post date by org
+
 ```{r, purl=T, fig.width=10, fig.height=40}
 #| eval: true
 #| output: true
