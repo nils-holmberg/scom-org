@@ -192,6 +192,72 @@ tmp |>
   )
 ```
 
+## 240926: measures over time, relative valence
+
+```{r, purl=T, fig.width=20, fig.height=10}
+#| eval: true
+#| output: true
+
+tmp = dtp |> as_tibble() |> 
+select(c(19,22,27,14,23,25,11,6)) |>
+#mutate(sa_int_rel_wc=sa_int_abs/wc) |>
+mutate(sa_val_rel_wc=sa_val/wc) |>
+mutate(e_index_rel=e_index/follow) |>
+mutate(e_index_rel=e_index) |>
+#mutate(date=as.POSIXct(time, origin="1970-01-01", tz="UTC")) |>
+mutate(date=as.Date(date)) |>
+mutate(date=format(date, "%Y-%m")) |>
+#group_by(date, org_type) |>
+group_by(date) |>
+summarize(
+    m1_sa_val=mean(sa_val),
+    m2_sa_int_abs=mean(sa_int_abs),
+    m3_wc=mean(wc),
+    #m4_sa_int_rel_wc=mean(sa_int_rel_wc),
+    m4_sa_val_rel_wc=mean(sa_val_rel_wc),
+    #date=first(date),
+    m5_e_index=mean(e_index_rel),
+    m6_follow=mean(follow)
+) 
+
+#tmp |> as_tibble()
+
+# Custom labeller function with individual variable names
+custom_labeller <- function(variable, value) {
+  custom_labels <- c(
+  m1_sa_val="sentiment valence", 
+  m2_sa_int_abs="sentiment intensity",
+  m3_wc="word count", 
+  #m4_sa_int_rel_wc="sentiment relative",
+  m4_sa_val_rel_wc="sentiment relative",
+  m5_e_index="engagement index",
+  m6_follow="follower count"
+  )
+  return(custom_labels[value])
+}
+
+tmp |> 
+  pivot_longer(cols = 2:7, names_to = "measure", values_to = "score") |>
+  ggplot(aes(x = as.Date(paste0(date, "-01")), y = score, color = measure)) + 
+  geom_point(size = 1.5) + 
+  geom_smooth(method = lm, formula = y ~ x, se = FALSE, linewidth = 1.5) + 
+  facet_wrap(vars(measure), scales = "free", labeller = as_labeller(custom_labeller)) +
+  scale_color_viridis_d() +  # Use viridis for discrete color scales
+  labs(
+    title = "Measures by Date of Post",
+    subtitle = "Post Sentiment and User Engagement Measures",
+    caption = "Sentiment is increasing over time, engagement is decreasing",
+    x = "Date of Post",
+    y = "Score"
+  ) +
+  theme(
+    text = element_text(size = rel(5.0)),
+    plot.title = element_text(size = rel(5.0), face = "bold"),
+    strip.text = element_text(size = rel(5.0)),
+    legend.position = "none"  # Suppress legend
+  )
+```
+
 ## 240120: viridis colors
 
 ```{r, purl=T, fig.width=20, fig.height=10}
