@@ -111,7 +111,7 @@ tmp |>
   scale_fill_viridis_d(labels=org_type_labs) + 
   facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
   labs(
-    title="Measures Descriptives",
+    title="Measures by Organizational Field",
     subtitle="Post Sentiment and User Engagement Measures",
     caption="",
     x="Measure",
@@ -178,7 +178,7 @@ tmp |>
   facet_wrap(vars(measure), scales = "free", labeller = as_labeller(custom_labeller)) +
   scale_color_viridis_d() +  # Use viridis for discrete color scales
   labs(
-    title = "Measures Over Time",
+    title = "Measures by Date of Post",
     subtitle = "Post Sentiment and User Engagement Measures",
     caption = "Sentiment is increasing over time, engagement is decreasing",
     x = "Date of Post",
