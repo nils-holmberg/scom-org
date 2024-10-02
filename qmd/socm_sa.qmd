@@ -317,12 +317,12 @@ tmp |> pivot_longer(cols=3:8, names_to="measure", values_to="score") |>
   #scale_color_manual(values=as.factor(tmp$org_type), labels=org_type_labs) + 
   facet_wrap(vars(measure), scales="free", labeller=as_labeller(custom_labeller)) +
   labs(
-    title="measures over time",
-    subtitle="sentiment measures and engagement",
+    title="Measures by Date of Post and Organizational Field",
+    subtitle="Post Sentiment and User Engagement Measures",
     caption="sentiment is increasing over time, engagment is decreasing",
-    x="date of post",
-    y="score",
-    color="organization type"
+    x="Date of Post",
+    y="Score",
+    color="Organizational Field"
   ) +
   theme(
     text=element_text(size=rel(5.0)),
